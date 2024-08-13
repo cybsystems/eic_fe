@@ -20,7 +20,7 @@ export default defineConfig({
         short_name: "WHMS",
         description: "Warehouse Management System",
         theme_color: "#47126b",
-        background_color:"red",
+        background_color:"#47126b",
         icons: [
           {
             src: "/vite.svg",
