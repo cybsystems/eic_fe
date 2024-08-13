@@ -16,11 +16,11 @@ export default defineConfig({
     VitePWA({
       registerType: "autoUpdate",
       manifest: {
-        name: "WHMS",
+        name: "Warehouse Management System",
         short_name: "WHMS",
-        description: "WHMS",
+        description: "Warehouse Management System",
         theme_color: "#47126b",
-        background_color:"#47126b",
+        background_color:"red",
         icons: [
           {
             src: "/vite.svg",
