@@ -19,7 +19,8 @@ export default defineConfig({
         name: "WHMS",
         short_name: "WHMS",
         description: "WHMS",
-        theme_color: "#ffffff",
+        theme_color: "#47126b",
+        background_color:"#47126b",
         icons: [
           {
             src: "/vite.svg",
