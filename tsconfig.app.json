@@ -14,6 +14,7 @@
     "skipLibCheck": true,
 
     /* Bundler mode */
+    "moduleResolution": "bundler",
     "allowImportingTsExtensions": true,
     "isolatedModules": true,
     "moduleDetection": "force",
@@ -26,7 +27,6 @@
     "noUnusedParameters": true,
     "noFallthroughCasesInSwitch": true,
     "types": ["node"],
-    "moduleResolution": "node",
     "esModuleInterop": true,
 
   },
