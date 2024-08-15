@@ -122,6 +122,8 @@ const UserFormPage: React.FC = () => {
                 helperText={formik.touched.email && formik.errors.email}
                 fullWidth
                 required
+                autoComplete="off"
+
               />
               <TextField
                 label="First Name"
@@ -162,6 +164,8 @@ const UserFormPage: React.FC = () => {
                 helperText={formik.touched.password && formik.errors.password}
                 fullWidth
                 required
+                autoComplete="new-password"
+
               />
               <Divider />
               <Typography variant="h6" gutterBottom>
@@ -192,7 +196,7 @@ const UserFormPage: React.FC = () => {
                   ))}
                 </Grid>
               )}
-              {permissionError && (
+              {permissionError&& !loading && (
                 //@ts-ignore
                 <Typography color="error">{permissionError}</Typography>
               )}
