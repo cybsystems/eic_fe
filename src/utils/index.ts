@@ -1,6 +1,6 @@
 import { toast } from 'react-toastify';
 
-export const showToast=(type:"sucess"|"error",message:string)=>{
+export const showToast=(type:"success"|"error",message:string)=>{
     const toastMethod=type==="error"?toast.error:toast.success;
     toastMethod(message,{
         position: "bottom-center",
