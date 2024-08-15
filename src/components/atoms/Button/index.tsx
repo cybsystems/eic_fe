@@ -27,7 +27,7 @@ const Button: React.FC<ButtonProps> = (props) => {
         textTransform: "none", // This will prevent the text from being capitalized
       }}
     >
-      {isLoading ? <CircularProgress /> : title}
+      {isLoading ? <CircularProgress size={20} /> : title}
     </MUIButton>
   );
 };
