@@ -7,13 +7,15 @@ interface DataTableProps {
   rows: Array<any>;
   pageSize: number;
   onRowClick?: (row: any) => void;
+  loading?:boolean
 }
 
 const DataTable = (props: DataTableProps) => {
-  const { rows, columns, pageSize = 5, onRowClick } = props;
+  const { rows, columns, pageSize = 5, onRowClick,loading } = props;
   return (
     <Box sx={{ width: "100%" }}>
       <DataGrid
+        loading={loading}
         onRowClick={onRowClick}
         rows={rows}
         columns={columns}

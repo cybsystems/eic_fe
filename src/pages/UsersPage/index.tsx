@@ -1,18 +1,18 @@
 /* eslint-disable @typescript-eslint/no-explicit-any */
 
-import { useNavigate } from 'react-router-dom';
+import { useNavigate } from "react-router-dom";
 
-import AddIcon from '@mui/icons-material/Add';
-import { Grid, Paper, Stack } from '@mui/material';
-import { GridColDef } from '@mui/x-data-grid';
+import AddIcon from "@mui/icons-material/Add";
+import { Grid, Paper, Stack } from "@mui/material";
 
+import Button from "@components/atoms/Button";
+import DataTable from "@components/atoms/DataTable";
+import PageGridContainer from "@components/atoms/PageGridContainer";
+import useDeviceType from "@hooks/useMediaDevice";
+import { useEffect, useState } from "react";
+import { getUsers } from "./helper";
 
-import Button from '@components/atoms/Button';
-import DataTable from '@components/atoms/DataTable';
-import PageGridContainer from '@components/atoms/PageGridContainer';
-import useDeviceType from '@hooks/useMediaDevice';
-
-const columns: GridColDef<(typeof rows)[number]>[] = [
+const columns = [
   { field: "id", headerName: "ID", width: 90 },
   {
     field: "firstName",
@@ -22,55 +22,34 @@ const columns: GridColDef<(typeof rows)[number]>[] = [
     field: "lastName",
     headerName: "Last name",
   },
-  {
-    field: "age",
-    headerName: "Age",
-    type: "number",
-  },
-];
-
-const rows = [
-  { id: 1, lastName: "Snow", firstName: "Jon", age: 14 },
-  { id: 2, lastName: "Lannister", firstName: "Cersei", age: 31 },
-  { id: 3, lastName: "Lannister", firstName: "Jaime", age: 31 },
-  { id: 4, lastName: "Stark", firstName: "Arya", age: 11 },
-  { id: 5, lastName: "Targaryen", firstName: "Daenerys", age: null },
-  { id: 7, lastName: "Clifford", firstName: "Ferrara", age: 44 },
-  { id: 8, lastName: "Frances", firstName: "Rossini", age: 36 },
-  { id: 9, lastName: "Roxie", firstName: "Harvey", age: 65 },
-  { id: 9, lastName: "Roxie", firstName: "Harvey", age: 65 },
-  { id: 9, lastName: "Roxie", firstName: "Harvey", age: 65 },
-  { id: 9, lastName: "Roxie", firstName: "Harvey", age: 65 },
-  { id: 9, lastName: "Roxie", firstName: "Harvey", age: 65 },
-  { id: 9, lastName: "Roxie", firstName: "Harvey", age: 65 },
-  { id: 9, lastName: "Roxie", firstName: "Harvey", age: 65 },
-  { id: 9, lastName: "Roxie", firstName: "Harvey", age: 65 },
-  { id: 9, lastName: "Roxie", firstName: "Harvey", age: 65 },
-  { id: 9, lastName: "Roxie", firstName: "Harvey", age: 65 },
-  { id: 9, lastName: "Roxie", firstName: "Harvey", age: 65 },
-  { id: 9, lastName: "Roxie", firstName: "Harvey", age: 65 },
-  { id: 9, lastName: "Roxie", firstName: "Harvey", age: 65 },
-  { id: 9, lastName: "Roxie", firstName: "Harvey", age: 65 },
-  { id: 9, lastName: "Roxie", firstName: "Harvey", age: 65 },
-  { id: 9, lastName: "Roxie", firstName: "Harvey", age: 65 },
-  { id: 9, lastName: "Roxie", firstName: "Harvey", age: 65 },
-  { id: 9, lastName: "Roxie", firstName: "Harvey", age: 65 },
-  { id: 9, lastName: "Roxie", firstName: "Harvey", age: 65 },
-  { id: 9, lastName: "Roxie", firstName: "Harvey", age: 65 },
-  { id: 9, lastName: "Roxie", firstName: "Harvey", age: 65 },
 ];
 
 const UsersPage = () => {
   const navigate = useNavigate();
   const { isMobile } = useDeviceType();
+  const [users, setUsers] = useState([]);
+  const [loading, setLoading] = useState(true);
+
+  useEffect(() => {
+    (async () => {
+      try {
+        const res = await getUsers();
+        setUsers(res.data);
+      } catch (error) {
+        console.log(error);
+      } finally {
+        setLoading(false);
+      }
+    })();
+  }, []);
 
   const onRowClick = (row: any) => {
     console.log({ row });
-    navigate(`/users/${row.id}`)
+    navigate(`/users/${row.id}`);
   };
   return (
     <PageGridContainer>
-       <Grid item xs={12}>
+      <Grid item xs={12}>
         <Stack
           direction="row"
           spacing={2}
@@ -83,15 +62,20 @@ const UsersPage = () => {
             title="Create User"
             onClick={() => navigate("/users/new")}
             fullWidth={isMobile}
-            prefixIcon={<AddIcon/>}
+            prefixIcon={<AddIcon />}
           />
         </Stack>
       </Grid>
-       <Grid item xs={12}>
+      <Grid item xs={12}>
         <Paper elevation={1}>
-          <DataTable columns={columns} rows={rows} pageSize={10} onRowClick={onRowClick}/>
+          <DataTable
+            columns={columns}
+            rows={users}
+            pageSize={10}
+            onRowClick={onRowClick}
+            loading={loading}
+          />
         </Paper>
-        
       </Grid>
     </PageGridContainer>
   );
