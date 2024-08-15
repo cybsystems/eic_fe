@@ -1,4 +1,5 @@
-import { Grid, useTheme, useMediaQuery } from "@mui/material";
+import useDeviceType from "@hooks/useMediaDevice";
+import { Grid } from "@mui/material";
 import React from "react";
 
 interface PageGridContainerProps {
@@ -6,8 +7,7 @@ interface PageGridContainerProps {
 }
 
 const PageGridContainer = (props: PageGridContainerProps) => {
-  const theme = useTheme();
-  const isMobile = useMediaQuery(theme.breakpoints.down('sm'));
+  const { isMobile } = useDeviceType();
 
   return (
     <Grid container padding={isMobile ? 1 : 4} style={{marginBottom: 10}}>

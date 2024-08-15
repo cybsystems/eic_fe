@@ -3,13 +3,14 @@
 import { useNavigate } from 'react-router-dom';
 
 import AddIcon from '@mui/icons-material/Add';
-import { Grid, Paper, Stack, useMediaQuery, useTheme } from '@mui/material';
+import { Grid, Paper, Stack } from '@mui/material';
 import { GridColDef } from '@mui/x-data-grid';
 
 
 import Button from '@components/atoms/Button';
 import DataTable from '@components/atoms/DataTable';
 import PageGridContainer from '@components/atoms/PageGridContainer';
+import useDeviceType from '@hooks/useMediaDevice';
 
 const columns: GridColDef<(typeof rows)[number]>[] = [
   { field: "id", headerName: "ID", width: 90 },
@@ -61,8 +62,7 @@ const rows = [
 
 const CRMPage = () => {
   const navigate = useNavigate();
-  const theme = useTheme();
-  const isMobile = useMediaQuery(theme.breakpoints.down('sm'));
+  const { isMobile } = useDeviceType();
 
   const onRowClick = (row: any) => {
     console.log({ row });

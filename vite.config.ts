@@ -48,6 +48,8 @@ export default defineConfig({
       "@contexts": path.resolve(__dirname, "src/contexts"),
       "@api": path.resolve(__dirname, "src/api"),
       "@utils": path.resolve(__dirname, "src/utils"),
+      "@hooks": path.resolve(__dirname, "src/hooks"),
+
 
       // Add more aliases as needed
     },

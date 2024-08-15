@@ -6,7 +6,9 @@
       "@components/*":["./components/*"],
       "@contexts/*":["./contexts/*"],
       "@api/*":["./api/*"],
-      "@utils/*":["./utils/*"]
+      "@utils/*":["./utils/*"],
+      "@hooks/*":["./hooks/*"]
+
 
 
     },

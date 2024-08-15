@@ -1,14 +1,14 @@
-import * as React from "react";
-import { styled, useTheme } from "@mui/material/styles";
-import MuiAppBar, { AppBarProps as MuiAppBarProps } from "@mui/material/AppBar";
-import Toolbar from "@mui/material/Toolbar";
-import Typography from "@mui/material/Typography";
-import IconButton from "@mui/material/IconButton";
+import useDeviceType from "@hooks/useMediaDevice";
 import MenuIcon from "@mui/icons-material/Menu";
+import MuiAppBar, { AppBarProps as MuiAppBarProps } from "@mui/material/AppBar";
 import Avatar from "@mui/material/Avatar"; // Import Avatar
+import IconButton from "@mui/material/IconButton";
 import Menu from "@mui/material/Menu";
 import MenuItem from "@mui/material/MenuItem";
-import { useMediaQuery } from "@mui/material";
+import { styled } from "@mui/material/styles";
+import Toolbar from "@mui/material/Toolbar";
+import Typography from "@mui/material/Typography";
+import * as React from "react";
 
 interface AppBarProps extends MuiAppBarProps {
   open?: boolean;
@@ -43,8 +43,7 @@ const AppBar = ({
   handleDrawerOpen: () => void;
   handleLogout: () => void;
 }) => {
-  const theme = useTheme();
-  const isMobile = useMediaQuery(theme.breakpoints.down('sm'));
+  const { isMobile } = useDeviceType();
 
   const [anchorEl, setAnchorEl] = React.useState<null | HTMLElement>(null);
 
