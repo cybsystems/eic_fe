@@ -61,7 +61,8 @@ const LoginPage = () => {
                 onBlur={formik.handleBlur}
                 error={formik.touched.email && Boolean(formik.errors.email)}
                 helperText={formik.touched.email && formik.errors.email}
-              />
+               autoComplete="off"
+          />
               <TextField
                 label="Password"
                 type="password"
@@ -78,7 +79,9 @@ const LoginPage = () => {
                   formik.touched.password && Boolean(formik.errors.password)
                 }
                 helperText={formik.touched.password && formik.errors.password}
-              />
+                autoComplete="new-password" // or use "off" or any random string
+
+             />
               <Button
                 type="primary"
                 title="Login"
