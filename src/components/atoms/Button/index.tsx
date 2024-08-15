@@ -1,5 +1,6 @@
 import React from "react";
 import { MUIButton } from "./style";
+import { CircularProgress } from "@mui/material";
 
 interface ButtonProps {
   type: "primary" | "secondary";
@@ -7,10 +8,13 @@ interface ButtonProps {
   fullWidth?: boolean;
   onClick: () => void;
   prefixIcon?: React.ReactNode;
+  disabled?: boolean;
+  isLoading?: boolean;
 }
 
 const Button: React.FC<ButtonProps> = (props) => {
-  const { type, title, fullWidth, onClick, prefixIcon } = props;
+  const { type, title, fullWidth, onClick, prefixIcon, disabled, isLoading } =
+    props;
   return (
     <MUIButton
       startIcon={prefixIcon}
@@ -18,11 +22,12 @@ const Button: React.FC<ButtonProps> = (props) => {
       variant={"contained"}
       fullWidth={fullWidth}
       buttonType={type}
+      disabled={disabled || isLoading}
       sx={{
         textTransform: "none", // This will prevent the text from being capitalized
       }}
     >
-      {title}
+      {isLoading ? <CircularProgress /> : title}
     </MUIButton>
   );
 };

@@ -1,9 +1,13 @@
-import { CssBaseline } from "@mui/material";
-import { ThemeProvider } from "@mui/material/styles";
-import "./App.css";
-import AppRoutes from "./AppRoutes";
-import theme from "./theme";
-import { AuthProvider } from "@contexts/authContext";
+import './App.css';
+
+import { AuthProvider } from '@contexts/authContext';
+import { CssBaseline } from '@mui/material';
+import { ThemeProvider } from '@mui/material/styles';
+import { ToastContainer } from 'react-toastify';
+
+import AppRoutes from './AppRoutes';
+import theme from './theme';
+import 'react-toastify/dist/ReactToastify.css';
 
 function App() {
   return (
@@ -11,6 +15,7 @@ function App() {
       <ThemeProvider theme={theme}>
         <CssBaseline /> {/* This applies baseline CSS for consistent styling */}
         <AppRoutes />
+        <ToastContainer />
       </ThemeProvider>
     </AuthProvider>
   );

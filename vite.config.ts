@@ -47,6 +47,7 @@ export default defineConfig({
       "@components": path.resolve(__dirname, "src/components"),
       "@contexts": path.resolve(__dirname, "src/contexts"),
       "@api": path.resolve(__dirname, "src/api"),
+      "@utils": path.resolve(__dirname, "src/utils"),
 
       // Add more aliases as needed
     },

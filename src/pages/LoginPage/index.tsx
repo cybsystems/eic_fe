@@ -1,10 +1,14 @@
-import Button from "@components/atoms/Button";
-import FullPageContainer from "@components/atoms/FullPageContainer";
-import { useAuth } from "@contexts/authContext";
-import { Box, Grid, TextField, Typography } from "@mui/material";
-import { useFormik } from "formik";
-import { validationSchema } from "./schema";
-import { signInUser } from "./helper";
+/* eslint-disable @typescript-eslint/no-explicit-any */
+import { useFormik } from 'formik';
+
+import Button from '@components/atoms/Button';
+import FullPageContainer from '@components/atoms/FullPageContainer';
+import { useAuth } from '@contexts/authContext';
+import { Box, Grid, TextField, Typography } from '@mui/material';
+import { showToast } from '@utils/index';
+
+import { signInUser } from './helper';
+import { validationSchema } from './schema';
 
 const LoginPage = () => {
   const { login } = useAuth();
@@ -12,10 +16,9 @@ const LoginPage = () => {
   const onSubmit = async (values: { email: string; password: string }) => {
     try {
       const res = await signInUser(values.email, values.password);
-      console.log({ res });
       login(res.data.token);
-    } catch (error) {
-      console.log({error})
+    } catch (error:any) {
+      showToast('error',error?.response?.data?.message || error?.message)
     }
   };
 
@@ -81,6 +84,7 @@ const LoginPage = () => {
                 title="Login"
                 fullWidth
                 onClick={formik.handleSubmit}
+                isLoading={formik.isSubmitting}
               />
             </form>
           </Box>

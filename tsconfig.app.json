@@ -5,7 +5,9 @@
       "@pages/*":["./pages/*"],
       "@components/*":["./components/*"],
       "@contexts/*":["./contexts/*"],
-      "@api/*":["./api/*"]
+      "@api/*":["./api/*"],
+      "@utils/*":["./utils/*"]
+
 
     },
     "target": "ES2020",
