@@ -4,8 +4,9 @@
     "paths": {
       "@pages/*":["./pages/*"],
       "@components/*":["./components/*"],
-      "@contexts/*":["./contexts/*"]
-      
+      "@contexts/*":["./contexts/*"],
+      "@api/*":["./api/*"]
+
     },
     "target": "ES2020",
     "useDefineForClassFields": true,

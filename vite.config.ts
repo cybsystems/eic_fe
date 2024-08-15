@@ -46,6 +46,7 @@ export default defineConfig({
       "@pages": path.resolve(__dirname, "src/pages"),
       "@components": path.resolve(__dirname, "src/components"),
       "@contexts": path.resolve(__dirname, "src/contexts"),
+      "@api": path.resolve(__dirname, "src/api"),
 
       // Add more aliases as needed
     },
