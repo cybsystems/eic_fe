@@ -209,7 +209,7 @@ const UserFormPage: React.FC = () => {
 
                 />
                 <Button
-                  type="primary"
+                  type="secondary"
                   onClick={() => navigate("/users")}
                   title="Cancel"
                   disabled={formik.isSubmitting}
