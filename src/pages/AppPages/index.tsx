@@ -3,6 +3,8 @@ import AddEditCRMPage from "@pages/CRMPages/AddEditCRMPage";
 import DashboardPage from "@pages/DashboardPage";
 import HomePage from "@pages/HomePage";
 import PageNotFound from "@pages/PageNotFound";
+import ProjectsPages from "@pages/ProjectsPages";
+import AddEditProjectPage from "@pages/ProjectsPages/AddEditProjectPage";
 import UsersPage from "@pages/UsersPage";
 import AddEditUserPage from "@pages/UsersPage/AddEditUserPage";
 import { Route, Routes } from "react-router-dom";
@@ -20,6 +22,12 @@ const AppPages = () => {
         <Route path="/crm" element={<CRMPage />} />
         <Route path="/crm/:id" element={<AddEditCRMPage />} />
         <Route path="/crm/new" element={<AddEditCRMPage />} />
+
+
+        <Route path="/projects" element={<ProjectsPages/>}/>
+        <Route path="/projects/:id" element={<AddEditProjectPage />} />
+        <Route path="/projects/new" element={<AddEditProjectPage />} />
+
 
         
         <Route path="*" element={<PageNotFound />} />

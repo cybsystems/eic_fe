@@ -1,3 +1,4 @@
+import { Domain } from '@mui/icons-material';
 import AssignmentIcon from '@mui/icons-material/Assignment';
 import ContactMailIcon from '@mui/icons-material/ContactMail';
 import DashboardIcon from '@mui/icons-material/Dashboard';
@@ -22,7 +23,9 @@ const DrawerContent = ({ open }: { open: boolean }) => {
     { text: 'Stocks', icon: <StoreIcon />, path: '/stocks' },
     { text: 'CRM', icon: <ContactMailIcon />, path: '/crm' },
     { text: 'Users', icon: <PeopleIcon />, path: '/users' },
+    { text: 'Projects', icon: <Domain />, path: '/projects' },
     { text: 'Reports', icon: <AssignmentIcon />, path: '/reports' },
+
   ];
 
   return (
