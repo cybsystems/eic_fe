@@ -112,7 +112,7 @@ const AddEditCRMPage = () => {
               onChange={(e) => setEmail(e.target.value)}
               sx={{ mb: 2 }}
             />
-            <Stack direction="row" spacing={2}>
+            <Stack direction="row-reverse" spacing={2}>
               <Button
                 type="primary"
                 onClick={handleSubmit}
