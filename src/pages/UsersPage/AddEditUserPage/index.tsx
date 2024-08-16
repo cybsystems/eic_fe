@@ -210,6 +210,7 @@ const UserFormPage: React.FC = () => {
                   title={`${editUser ? "Update" : "Create"} User`}
                   onClick={formik.handleSubmit}
                   isLoading={formik.isSubmitting}
+                  disabled={loading}
                 />
                 <Button
                   type="secondary"
