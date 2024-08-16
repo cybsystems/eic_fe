@@ -48,7 +48,7 @@ const UserFormPage: React.FC = () => {
   const [currentUser, setCurrentUser] = useState<any>({});
   const [loading, setLoading] = useState<boolean>(true); // State to manage loading
   const navigate = useNavigate();
-  const editUser = id !== "new";
+  const editUser = !!id ;
 
   // Fetch permissions from API
   useEffect(() => {

@@ -1,26 +1,34 @@
 /* eslint-disable @typescript-eslint/no-explicit-any */
-import Box from "@mui/material/Box";
-import { DataGrid } from "@mui/x-data-grid";
+import { Box } from "@mui/material";
+import { DataGrid, GridColDef, GridRowParams } from "@mui/x-data-grid";
+import React from "react";
 
 interface DataTableProps {
-  columns: Array<any>;
-  rows: Array<any>;
-  pageSize: number;
-  onRowClick?: (row: any) => void;
-  loading?:boolean
+  columns: GridColDef[];
+  rows: any[]; // Ideally, define a specific type for your rows instead of using `any`.
+  pageSize?: number;
+  onRowClick?: (row: GridRowParams) => void;
+  loading?: boolean;
 }
 
-const DataTable = (props: DataTableProps) => {
-  const { rows, columns, pageSize = 5, onRowClick,loading } = props;
+const DataTable: React.FC<DataTableProps> = ({
+  rows,
+  columns,
+  pageSize = 5,
+  onRowClick,
+  loading = false,
+}) => {
+  // Number of rows to display in the skeleton
+
   return (
-    <Box sx={{ width: "100%" }}>
+    <Box sx={{ width: "100%", height: 400 }}>
       <DataGrid
         loading={loading}
-        onRowClick={onRowClick}
         rows={rows}
         columns={columns}
+        onRowClick={onRowClick}
         initialState={{
-          pagination: {
+           pagination: {
             paginationModel: {
               pageSize,
             },
@@ -29,6 +37,13 @@ const DataTable = (props: DataTableProps) => {
         pageSizeOptions={[5]}
         checkboxSelection
         disableRowSelectionOnClick
+        slotProps={{
+          loadingOverlay: {
+            variant: "linear-progress",
+            noRowsVariant: "skeleton",
+          },
+        }}
+        
       />
     </Box>
   );
