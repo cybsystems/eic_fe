@@ -22,6 +22,10 @@ const columns = [
     field: "lastName",
     headerName: "Last name",
   },
+  {
+    field: "email",
+    headerName: "Email",
+  },
 ];
 
 const UsersPage = () => {

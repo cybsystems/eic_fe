@@ -13,12 +13,12 @@ import {
   TextField,
   Typography,
 } from "@mui/material";
+import { showToast } from "@utils/index";
 import { useFormik } from "formik";
 import React, { useEffect, useState } from "react";
-import { useNavigate } from "react-router-dom";
-import * as Yup from "yup";
-import { createUser, getPermissions } from "./helper";
-import { showToast } from "@utils/index";
+import { useNavigate, useParams } from "react-router-dom";
+import { createUser, getInitialData, updateUser } from "./helper";
+import { validationSchema } from "./schema";
 
 interface Permission {
   id: string; // Unique identifier for the permission
@@ -36,46 +36,39 @@ interface UserFormData {
   permissions: { [key: string]: boolean };
 }
 
-const validationSchema = Yup.object({
-  email: Yup.string().email("Invalid email address").required("Required"),
-  firstName: Yup.string().required("Required"),
-  lastName: Yup.string().required("Required"),
-  password: Yup.string().required("Required"),
-  permissions: Yup.object()
-    .shape({})
-    .test(
-      "at-least-one-true",
-      "At least one option must be selected",
-      (value) => {
-        return Object.values(value).some((val) => val === true);
-      }
-    ),
-});
-
 const UserFormPage: React.FC = () => {
+  const { id } = useParams<{ id: string }>(); // Extract ID from URL
+
   const [availablePermissions, setAvailablePermissions] = useState<
     Permission[]
   >([]);
   const [permissions, setPermissions] = useState<UserFormData["permissions"]>(
     {}
   );
+  const [currentUser, setCurrentUser] = useState<any>({});
   const [loading, setLoading] = useState<boolean>(true); // State to manage loading
   const navigate = useNavigate();
+  const editUser = id !== "new";
 
   // Fetch permissions from API
   useEffect(() => {
-    const fetchPermissions = async () => {
+    const fetchInitialData = async () => {
       try {
-        const response = await getPermissions();
-        const data: Permission[] = response.data;
-
+        const { permissions, user } = await getInitialData(id);
         // Set permissions list
-        setAvailablePermissions(data);
-
+        setAvailablePermissions(permissions);
+        if (user) {
+          setCurrentUser({ ...user });
+        }
         // Initialize permissions state with fetched permissions
         const initialPermissions: UserFormData["permissions"] = {};
-        data.forEach((perm) => {
+        permissions.forEach((perm: any) => {
           initialPermissions[perm.id] = false; // Use the `name` as key for permissions
+          if (user) {
+            initialPermissions[perm.id] = user.permissions.some(
+              (i: any) => i.id === perm.id
+            );
+          }
         });
         setPermissions(initialPermissions);
       } catch (error) {
@@ -85,23 +78,32 @@ const UserFormPage: React.FC = () => {
       }
     };
 
-    fetchPermissions();
-  }, []);
+    fetchInitialData();
+  }, [id]);
 
   const onSubmit = async (values: any) => {
-    await createUser(values);
-    showToast('success','User Created')
-    navigate("/users"); // Redirect to the previous page or home page
+    try {
+     
+      if(editUser){
+        await updateUser(values,id)
+      }else{
+        await createUser(values)
+      }
+      showToast("success", editUser ? "User Updated" : "User Created");
+      navigate("/users"); // Redirect to the previous page or home page
+    } catch (error:any) {
+      showToast("error", error?.response?.data?.message||error.message);
+    }
   };
   const formik = useFormik<UserFormData>({
     initialValues: {
-      email: "",
-      firstName: "",
-      lastName: "",
-      password: "",
+      email: currentUser.email || "",
+      firstName: currentUser.firstName || "",
+      lastName: currentUser.lastName || "",
+      password: currentUser.password || "",
       permissions,
     },
-    validationSchema,
+    validationSchema: validationSchema,
     enableReinitialize: true, // Allows Formik to update initial values on permissions change
     onSubmit: onSubmit,
   });
@@ -114,6 +116,7 @@ const UserFormPage: React.FC = () => {
             <Stack spacing={3}>
               <TextField
                 label="Email"
+                disabled={loading}
                 name="email"
                 value={formik.values.email}
                 onChange={formik.handleChange}
@@ -123,10 +126,10 @@ const UserFormPage: React.FC = () => {
                 fullWidth
                 required
                 autoComplete="off"
-
               />
               <TextField
                 label="First Name"
+                disabled={loading}
                 name="firstName"
                 value={formik.values.firstName}
                 onChange={formik.handleChange}
@@ -140,6 +143,7 @@ const UserFormPage: React.FC = () => {
               />
               <TextField
                 label="Last Name"
+                disabled={loading}
                 name="lastName"
                 value={formik.values.lastName}
                 onChange={formik.handleChange}
@@ -154,6 +158,7 @@ const UserFormPage: React.FC = () => {
               <TextField
                 label="Password"
                 name="password"
+                disabled={loading || editUser}
                 type="password"
                 value={formik.values.password}
                 onChange={formik.handleChange}
@@ -165,7 +170,6 @@ const UserFormPage: React.FC = () => {
                 fullWidth
                 required
                 autoComplete="new-password"
-
               />
               <Divider />
               <Typography variant="h6" gutterBottom>
@@ -196,17 +200,16 @@ const UserFormPage: React.FC = () => {
                   ))}
                 </Grid>
               )}
-              {permissionError&& !loading && (
+              {permissionError && !loading && (
                 //@ts-ignore
                 <Typography color="error">{permissionError}</Typography>
               )}
               <Stack direction="row" spacing={2}>
                 <Button
                   type="primary"
-                  title="Create User"
+                  title={`${editUser ? "Update" : "Create"} User`}
                   onClick={formik.handleSubmit}
                   isLoading={formik.isSubmitting}
-
                 />
                 <Button
                   type="secondary"
