@@ -7,23 +7,24 @@ import { H5 } from "@components/atoms/Typographies";
 import AddIcon from "@mui/icons-material/Add";
 import DeleteIcon from "@mui/icons-material/Delete";
 import {
-    Divider,
-    Grid,
-    IconButton,
-    Paper,
-    Stack,
-    TextField,
+  Divider,
+  Grid,
+  IconButton,
+  Paper,
+  Stack,
+  TextField,
 } from "@mui/material";
 import { unitsSchema } from "@pages/LoginPage/schema";
 import { formatError, showToast } from "@utils/index";
 import { FieldArray, Form, Formik } from "formik";
 import { useEffect, useState } from "react";
-import { useParams } from "react-router-dom";
+import { useNavigate, useParams } from "react-router-dom";
 import { getProjectDetails, saveUnitsToProject } from "./helper";
 
 const AddUnitsPage = () => {
   const [projectDetails, setProjectDetails] = useState<any>(null);
   const [loading, setLoading] = useState(true);
+  const navigate = useNavigate()
   const { id } = useParams();
 
   useEffect(() => {
@@ -44,6 +45,7 @@ const AddUnitsPage = () => {
       try {
         await saveUnitsToProject(values.units, id);
         showToast("success", "Units added successfully");
+        navigate(`/projects/${id}/contractor`)
       } catch (error) {
         showToast("error", formatError(error));
       }
@@ -51,7 +53,7 @@ const AddUnitsPage = () => {
   };
   // Formik setup with initial values and validation schema
   const initialValues = {
-    units: [{ name: "" }],
+    units: projectDetails?.units?.length?  projectDetails?.units: [{ name: "" }],
   };
 
   if (loading) {
@@ -67,7 +69,15 @@ const AddUnitsPage = () => {
             validationSchema={unitsSchema}
             onSubmit={onSubmit}
           >
-            {({ values, handleChange, handleBlur, errors, touched,handleSubmit,isSubmitting }) => (
+            {({
+              values,
+              handleChange,
+              handleBlur,
+              errors,
+              touched,
+              handleSubmit,
+              isSubmitting,
+            }) => (
               <Form>
                 <Stack spacing={2}>
                   <H5>{projectDetails?.name}</H5>
@@ -76,7 +86,7 @@ const AddUnitsPage = () => {
                     name="units"
                     render={(arrayHelpers) => (
                       <Stack spacing={2}>
-                        {values.units.map((unit, index) => (
+                        {values.units.map((unit: any, index: number) => (
                           <Stack
                             key={index}
                             direction="row"
@@ -92,12 +102,16 @@ const AddUnitsPage = () => {
                               onBlur={handleBlur}
                               error={
                                 touched.units &&
+                                //@ts-ignore
+
                                 touched.units[index] &&
                                 //@ts-ignore
                                 Boolean(errors.units?.[index]?.name)
                               }
                               helperText={
                                 touched.units &&
+                                //@ts-ignore
+
                                 touched.units[index] &&
                                 //@ts-ignore
                                 errors.units?.[index]?.name
@@ -122,7 +136,12 @@ const AddUnitsPage = () => {
                   />
                   <Divider />
                   <Stack direction="row-reverse" spacing={2}>
-                    <Button type="primary" title="Next" onClick={handleSubmit} isLoading={isSubmitting} />
+                    <Button
+                      type="primary"
+                      title="Next"
+                      onClick={handleSubmit}
+                      isLoading={isSubmitting}
+                    />
                     <Button
                       type="secondary"
                       onClick={() => {}}

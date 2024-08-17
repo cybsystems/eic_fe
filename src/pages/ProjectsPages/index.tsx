@@ -44,7 +44,7 @@ const ProjectsPage = () => {
 
   const onRowClick = (row: any) => {
     console.log({ row });
-    navigate(`/projects/${row.id}`);
+    navigate(`/projects/${row.id}/details`);
   };
   return (
     <PageGridContainer>

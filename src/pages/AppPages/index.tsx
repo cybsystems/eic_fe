@@ -7,7 +7,9 @@ import HomePage from "@pages/HomePage";
 import PageNotFound from "@pages/PageNotFound";
 import ProjectsPages from "@pages/ProjectsPages";
 import AddEditProjectPage from "@pages/ProjectsPages/AddEditProjectPages";
+import AddContractorPage from "@pages/ProjectsPages/AddEditProjectPages/AddContractor";
 import AddUnitsPage from "@pages/ProjectsPages/AddEditProjectPages/AddUnitsPage";
+import ProjectDetailsPage from "@pages/ProjectsPages/ProjectDetailsPage";
 import UsersPage from "@pages/UsersPage";
 import AddEditUserPage from "@pages/UsersPage/AddEditUserPage";
 import WorkOrderPage from "@pages/WorkOrderPages";
@@ -30,10 +32,12 @@ const AppPages = () => {
 
 
         <Route path="/projects" element={<ProjectsPages/>}/>
+        <Route path="/projects/:id/details" element={<ProjectDetailsPage />} />
         <Route path="/projects/:id" element={<AddEditProjectPage />} />
         <Route path="/projects/new" element={<AddEditProjectPage />} />
         <Route path="/projects/:id/units" element={<AddUnitsPage />} />
 
+        <Route path="/projects/:id/contractor" element={<AddContractorPage />} />
 
 
 
