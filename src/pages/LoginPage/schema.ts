@@ -6,3 +6,11 @@ export const validationSchema = Yup.object({
     .required("Email is required"),
   password: Yup.string().required("Password is required"),
 });
+
+export const unitsSchema= Yup.object({
+  units: Yup.array().of(
+    Yup.object({
+      name: Yup.string().required("Unit name is required"),
+    })
+  ),
+})

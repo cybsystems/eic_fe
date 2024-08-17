@@ -1,18 +1,25 @@
 /* eslint-disable @typescript-eslint/no-explicit-any */
 /* eslint-disable @typescript-eslint/ban-ts-comment */
+import Button from "@components/atoms/Button";
 import PageGridContainer from "@components/atoms/PageGridContainer";
 import PaperLoader from "@components/atoms/PaperLoader";
 import { H5 } from "@components/atoms/Typographies";
-import { Divider, Grid, Paper, Stack, TextField, IconButton } from "@mui/material";
+import AddIcon from "@mui/icons-material/Add";
+import DeleteIcon from "@mui/icons-material/Delete";
+import {
+    Divider,
+    Grid,
+    IconButton,
+    Paper,
+    Stack,
+    TextField,
+} from "@mui/material";
+import { unitsSchema } from "@pages/LoginPage/schema";
 import { formatError, showToast } from "@utils/index";
+import { FieldArray, Form, Formik } from "formik";
 import { useEffect, useState } from "react";
 import { useParams } from "react-router-dom";
-import { Formik, FieldArray, Form } from "formik";
-import * as Yup from "yup";
-import Button from "@components/atoms/Button";
-import DeleteIcon from "@mui/icons-material/Delete";
-import AddIcon from "@mui/icons-material/Add";
-import { getProjectDetails } from "./helper";
+import { getProjectDetails, saveUnitsToProject } from "./helper";
 
 const AddUnitsPage = () => {
   const [projectDetails, setProjectDetails] = useState<any>(null);
@@ -32,18 +39,20 @@ const AddUnitsPage = () => {
     })();
   }, [id]);
 
+  const onSubmit = async (values: any) => {
+    if (id) {
+      try {
+        await saveUnitsToProject(values.units, id);
+        showToast("success", "Units added successfully");
+      } catch (error) {
+        showToast("error", formatError(error));
+      }
+    }
+  };
   // Formik setup with initial values and validation schema
   const initialValues = {
     units: [{ name: "" }],
   };
-
-  const validationSchema = Yup.object({
-    units: Yup.array().of(
-      Yup.object({
-        name: Yup.string().required("Unit name is required"),
-      })
-    ),
-  });
 
   if (loading) {
     return <PaperLoader />;
@@ -55,14 +64,10 @@ const AddUnitsPage = () => {
         <Paper elevation={3} sx={{ padding: 4 }}>
           <Formik
             initialValues={initialValues}
-            validationSchema={validationSchema}
-            onSubmit={(values) => {
-              // Handle form submission logic here
-              console.log(values);
-              showToast("success", "Units added successfully");
-            }}
+            validationSchema={unitsSchema}
+            onSubmit={onSubmit}
           >
-            {({ values, handleChange, handleBlur, errors, touched }) => (
+            {({ values, handleChange, handleBlur, errors, touched,handleSubmit,isSubmitting }) => (
               <Form>
                 <Stack spacing={2}>
                   <H5>{projectDetails?.name}</H5>
@@ -72,7 +77,12 @@ const AddUnitsPage = () => {
                     render={(arrayHelpers) => (
                       <Stack spacing={2}>
                         {values.units.map((unit, index) => (
-                          <Stack key={index} direction="row" spacing={2} alignItems="center">
+                          <Stack
+                            key={index}
+                            direction="row"
+                            spacing={2}
+                            alignItems="center"
+                          >
                             <TextField
                               fullWidth
                               label={`Unit ${index + 1}`}
@@ -112,8 +122,12 @@ const AddUnitsPage = () => {
                   />
                   <Divider />
                   <Stack direction="row-reverse" spacing={2}>
-                    <Button type="primary" title="Next" onClick={() => {}}/>
-                    <Button type="secondary" onClick={() => {}} title="Cancel" />
+                    <Button type="primary" title="Next" onClick={handleSubmit} isLoading={isSubmitting} />
+                    <Button
+                      type="secondary"
+                      onClick={() => {}}
+                      title="Cancel"
+                    />
                   </Stack>
                 </Stack>
               </Form>

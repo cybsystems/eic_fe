@@ -8,3 +8,7 @@ export const saveProject=async(payload:any)=>{
 export const getProjectDetails=async(projectId?:string)=>{
     return await apiInstance.get(`projects/${projectId}`)
 }
+
+export const saveUnitsToProject=async(units:Array<{name:string}>,projectId:string)=>{
+    return apiInstance.post("project-contractor-unit-assignments",{units,projectId})
+}
