@@ -6,8 +6,8 @@ import { useNavigate, useParams } from "react-router-dom";
 import Button from "@components/atoms/Button";
 /* eslint-disable @typescript-eslint/ban-ts-comment */
 import PageGridContainer from "@components/atoms/PageGridContainer";
+import PaperLoader from "@components/atoms/PaperLoader";
 import {
-  CircularProgress,
   FormControl,
   Grid,
   InputLabel,
@@ -15,7 +15,7 @@ import {
   Paper,
   Select,
   Stack,
-  TextField,
+  TextField
 } from "@mui/material";
 import { showToast } from "@utils/index";
 import { initialDataForContractor, saveContractor } from "./helper";
@@ -76,24 +76,7 @@ const AddEditCRMPage = () => {
 
   if (loading) {
     return (
-      <PageGridContainer>
-        <Grid item xs={12}>
-          <Paper elevation={3} sx={{ padding: 4 }}>
-            <Grid
-              item
-              xs={12}
-              style={{
-                display: "flex",
-                justifyContent: "center",
-                alignItems: "center",
-                height: 304,
-              }}
-            >
-              <CircularProgress />
-            </Grid>
-          </Paper>
-        </Grid>
-      </PageGridContainer>
+      <PaperLoader/>
     );
   }
   return (

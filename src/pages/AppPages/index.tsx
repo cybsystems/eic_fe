@@ -6,7 +6,8 @@ import AddEditFirmPage from "@pages/FirmsPages/AddEditFirmPage";
 import HomePage from "@pages/HomePage";
 import PageNotFound from "@pages/PageNotFound";
 import ProjectsPages from "@pages/ProjectsPages";
-import AddEditProjectPage from "@pages/ProjectsPages/AddEditProjectPage";
+import AddEditProjectPage from "@pages/ProjectsPages/AddEditProjectPages";
+import AddUnitsPage from "@pages/ProjectsPages/AddEditProjectPages/AddUnitsPage";
 import UsersPage from "@pages/UsersPage";
 import AddEditUserPage from "@pages/UsersPage/AddEditUserPage";
 import WorkOrderPage from "@pages/WorkOrderPages";
@@ -31,6 +32,8 @@ const AppPages = () => {
         <Route path="/projects" element={<ProjectsPages/>}/>
         <Route path="/projects/:id" element={<AddEditProjectPage />} />
         <Route path="/projects/new" element={<AddEditProjectPage />} />
+        <Route path="/projects/:id/units" element={<AddUnitsPage />} />
+
 
 
 

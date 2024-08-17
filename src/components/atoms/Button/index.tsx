@@ -19,7 +19,7 @@ const Button: React.FC<ButtonProps> = (props) => {
   return (
     <MUIButton
       startIcon={prefixIcon}
-      style={{width:200,...style}}
+      style={{width:fullWidth?'none':200,...style}}
       onClick={onClick}
       variant={"contained"}
       fullWidth={fullWidth}
