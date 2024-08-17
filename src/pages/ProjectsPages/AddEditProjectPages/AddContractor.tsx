@@ -4,7 +4,6 @@ import Button from "@components/atoms/Button";
 import PageGridContainer from "@components/atoms/PageGridContainer";
 import PaperLoader from "@components/atoms/PaperLoader";
 import { H5 } from "@components/atoms/Typographies";
-import AddIcon from "@mui/icons-material/Add";
 import {
   Divider,
   FormControl,
@@ -99,7 +98,7 @@ const AddContractorPage = () => {
                     <Divider />
                     <FieldArray
                       name="units"
-                      render={(arrayHelpers) => (
+                      render={() => (
                         <Stack spacing={2}>
                           {values.units.map((unit: any, index: number) => (
                             <Stack
@@ -164,12 +163,7 @@ const AddContractorPage = () => {
                              
                             </Stack>
                           ))}
-                          <Button
-                            type="secondary"
-                            prefixIcon={<AddIcon />}
-                            onClick={() => arrayHelpers.push({ name: "" })}
-                            title="Add Unit"
-                          />
+                        
                         </Stack>
                       )}
                     />

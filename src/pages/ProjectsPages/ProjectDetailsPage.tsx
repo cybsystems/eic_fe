@@ -1,16 +1,18 @@
 /* eslint-disable @typescript-eslint/no-explicit-any */
 import { formatError, showToast } from "@utils/index";
 import { useEffect, useState } from "react";
-import { useParams } from "react-router-dom";
+import { useNavigate, useParams } from "react-router-dom";
 import { getProjectAndContractorDetails } from "./AddEditProjectPages/helper";
 import PageGridContainer from "@components/atoms/PageGridContainer";
 import PaperLoader from "@components/atoms/PaperLoader";
-import { Grid, Paper, Typography, List, ListItem, ListItemText, Divider } from "@mui/material";
+import { Grid, Paper, Typography, List, ListItem, ListItemText, Divider, Stack } from "@mui/material";
+import Button from "@components/atoms/Button";
 
 const ProjectDetailsPage = () => {
   const { id } = useParams();
   const [projectDetails, setProjectDetails] = useState<any>({});
   const [loading, setLoading] = useState(true);
+  const navigate = useNavigate();
 
   useEffect(() => {
     (async () => {
@@ -33,39 +35,46 @@ const ProjectDetailsPage = () => {
     <PageGridContainer>
       <Grid item xs={12}>
         <Paper elevation={3} sx={{ padding: 4 }}>
-          <Typography variant="h4" gutterBottom>
-            {projectDetails.projectDetails.name}
-          </Typography>
-          <Typography variant="h6" gutterBottom>
-            Contractors and Units
-          </Typography>
-          <List>
-            {projectDetails.contractorUnits.map((unit:any) => (
-              <div key={unit.id}>
-                <ListItem>
-                  <ListItemText
-                    primary={`Unit: ${unit.ContractorUnit.name}`}
-                    secondary={
-                      <>
-                        <Typography component="span" variant="body2" color="text.primary">
-                          Contractor: {unit.Contractor.name}
-                        </Typography>
-                        <br />
-                        <Typography component="span" variant="body2" color="text.primary">
-                          Email: {unit.Contractor.email}
-                        </Typography>
-                        <br />
-                        <Typography component="span" variant="body2" color="text.primary">
-                          Phone: {unit.Contractor.phoneNumber}
-                        </Typography>
-                      </>
-                    }
-                  />
-                </ListItem>
-                <Divider />
-              </div>
-            ))}
-          </List>
+          <Stack direction="row" alignItems="center" mb={2}>
+            <Typography variant="h4" gutterBottom sx={{ flexGrow: 1 }}>
+              {projectDetails.projectDetails.name}
+            </Typography>
+            <Button type="secondary" title="Add Units and Contractors" onClick={() => navigate(`/projects/${id}/units`)} />
+          </Stack>
+          {!!projectDetails.contractorUnits?.length && (
+            <>
+              <Typography variant="h6" gutterBottom>
+                Contractors and Units
+              </Typography>
+              <List>
+                {projectDetails.contractorUnits.map((unit: any) => (
+                  <div key={unit.id}>
+                    <ListItem>
+                      <ListItemText
+                        primary={`Unit: ${unit.ContractorUnit.name}`}
+                        secondary={
+                          <>
+                            <Typography component="span" variant="body2" color="text.primary">
+                              Contractor: {unit.Contractor.name}
+                            </Typography>
+                            <br />
+                            <Typography component="span" variant="body2" color="text.primary">
+                              Email: {unit.Contractor.email}
+                            </Typography>
+                            <br />
+                            <Typography component="span" variant="body2" color="text.primary">
+                              Phone: {unit.Contractor.phoneNumber}
+                            </Typography>
+                          </>
+                        }
+                      />
+                    </ListItem>
+                    <Divider />
+                  </div>
+                ))}
+              </List>
+            </>
+          )}
         </Paper>
       </Grid>
     </PageGridContainer>
