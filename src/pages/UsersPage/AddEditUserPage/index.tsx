@@ -168,6 +168,7 @@ const UserFormPage: React.FC = () => {
                 loading={loading}
                 availablePermissions={availablePermissions}
               />
+              
               <Stack direction="row-reverse" spacing={2}>
                 <Button
                   type="primary"

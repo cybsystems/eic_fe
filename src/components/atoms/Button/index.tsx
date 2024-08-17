@@ -10,7 +10,7 @@ interface ButtonProps {
   prefixIcon?: React.ReactNode;
   disabled?: boolean;
   isLoading?: boolean;
-  style?:React.CSSProperties
+  style?:React.CSSProperties,
 }
 
 const Button: React.FC<ButtonProps> = (props) => {
