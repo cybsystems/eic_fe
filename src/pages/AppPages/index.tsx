@@ -1,6 +1,8 @@
 import CRMPage from "@pages/CRMPages";
 import AddEditCRMPage from "@pages/CRMPages/AddEditCRMPage";
 import DashboardPage from "@pages/DashboardPage";
+import FirmsPage from "@pages/FirmsPages";
+import AddEditFirmPage from "@pages/FirmsPages/AddEditFirmPage";
 import HomePage from "@pages/HomePage";
 import PageNotFound from "@pages/PageNotFound";
 import ProjectsPages from "@pages/ProjectsPages";
@@ -29,7 +31,13 @@ const AppPages = () => {
         <Route path="/projects/new" element={<AddEditProjectPage />} />
 
 
-        
+
+        <Route path="/firms" element={<FirmsPage/>}/>
+        <Route path="/firms/:id" element={<AddEditFirmPage />} />
+        <Route path="/firms/new" element={<AddEditFirmPage />} />
+
+
+
         <Route path="*" element={<PageNotFound />} />
         
       </Route>

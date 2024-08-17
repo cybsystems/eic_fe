@@ -12,12 +12,12 @@ import {
 import { useNavigate } from "react-router-dom";
 
 
-const AddEditProjectPage = () => {
+const AddEditFirmPage = () => {
 
   const navigate= useNavigate()
   
   const handleSubmit = () => {
-    navigate("/projects")
+    navigate("/firms")
   };
 
   return (
@@ -43,12 +43,12 @@ const AddEditProjectPage = () => {
               <Button
                 type="primary"
                 onClick={handleSubmit}
-                title="Create Firm"
+                title="Create Project"
               />
 
               <Button
                 type="secondary"
-                onClick={() => navigate("/porjects")}
+                onClick={() => navigate("/firms")}
                 title="Cancel"
               />
             </Stack>
@@ -59,4 +59,4 @@ const AddEditProjectPage = () => {
   );
 };
 
-export default AddEditProjectPage;
+export default AddEditFirmPage;
