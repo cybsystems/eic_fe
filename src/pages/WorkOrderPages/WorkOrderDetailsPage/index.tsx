@@ -1,37 +1,68 @@
 /* eslint-disable @typescript-eslint/no-explicit-any */
 import PageGridContainer from "@components/atoms/PageGridContainer";
-import { Box, Card, CardContent, Divider, Grid, Typography } from "@mui/material";
+import {
+  Box,
+  Card,
+  CardContent,
+  Divider,
+  Grid,
+  Typography,
+} from "@mui/material";
 import { formatError, showToast } from "@utils/index";
 import { useEffect, useState } from "react";
 import { useParams } from "react-router-dom";
-import { getWorkOrderDetails } from "./helper";
+import { getWorkOrderDetails, updateWorkOrderStatus } from "./helper";
 import PaperLoader from "@components/atoms/PaperLoader";
 import { H5 } from "@components/atoms/Typographies";
+import Button from "@components/atoms/Button";
 
 const WorkOrderDetailsPage = () => {
   const [workOrderDetails, setWorkOrderDetails] = useState<any>(null);
   const [loading, setLoading] = useState(true);
+  const [statusLoader, setStatusLoader] = useState(false);
   const { id: workOrderId } = useParams();
 
+  const loadWorkOrderDetails = async (workOrderId: string) => {
+    try {
+      if (workOrderId) {
+        const workOrderResponse = await getWorkOrderDetails(workOrderId);
+        setWorkOrderDetails(workOrderResponse.data);
+      }
+    } catch (error) {
+      showToast("error", formatError(error));
+    } finally {
+      setLoading(false);
+    }
+  };
+
   useEffect(() => {
-    (async () => {
+    if (workOrderId) {
+      loadWorkOrderDetails(workOrderId);
+    }
+  }, [workOrderId]);
+
+  const onStatusChangeClicked = async () => {
+    if (workOrderId) {
       try {
-        if (workOrderId) {
-          const workOrderResponse = await getWorkOrderDetails(workOrderId);
-          setWorkOrderDetails(workOrderResponse.data);
-        }
+        setStatusLoader(true);
+        await updateWorkOrderStatus(workOrderId, 3);
+        setWorkOrderDetails({...workOrderDetails,status:3})
+        showToast('success','Work order completed')
       } catch (error) {
         showToast("error", formatError(error));
       } finally {
-        setLoading(false);
+        setStatusLoader(false);
+        loadWorkOrderDetails(workOrderId);
       }
-    })();
-  }, [workOrderId]);
+    }
+  };
 
   if (loading) {
     return <PaperLoader />;
   }
-const statusMap:any = { 1: "Created", 2: "Approved", 3: "Completed" };
+
+  const statusMap: any = { 1: "Created", 2: "Approved", 3: "Completed" };
+
   return (
     <PageGridContainer>
       <Grid container spacing={3}>
@@ -48,28 +79,68 @@ const statusMap:any = { 1: "Created", 2: "Approved", 3: "Completed" };
                   <Grid container spacing={2} direction="column">
                     {/* General Information */}
                     <Grid item>
-                      <H5 gutterBottom>
-                        General Information
-                      </H5>
+                      <Grid
+                        container
+                        alignItems="center"
+                        justifyContent="space-between"
+                        marginBottom={1}
+                      >
+                        <Grid item>
+                          <H5 gutterBottom>General Information</H5>
+                        </Grid>
+                        {workOrderDetails.status !== 3 && (
+                          <Grid item>
+                            <Button
+                              onClick={onStatusChangeClicked}
+                              type="secondary"
+                              title="Mark as Completed"
+                              isLoading={statusLoader}
+                            />
+                          </Grid>
+                        )}
+                      </Grid>
                       <Divider sx={{ marginBottom: 2 }} />
                       <Grid container spacing={1}>
                         <Grid item xs={12} md={6}>
-                          <Typography variant="body1"><strong>Title:</strong> {workOrderDetails.title}</Typography>
+                          <Typography variant="body1">
+                            <strong>Title:</strong> {workOrderDetails.title}
+                          </Typography>
                         </Grid>
                         <Grid item xs={12} md={6}>
-                          <Typography variant="body1"><strong>Status:</strong> {statusMap[workOrderDetails.status]}</Typography>
+                          <Typography variant="body1">
+                            <strong>Status:</strong>{" "}
+                            {statusMap[workOrderDetails.status]}
+                          </Typography>
                         </Grid>
                         <Grid item xs={12}>
-                          <Typography variant="body1"><strong>Description:</strong> {workOrderDetails.description}</Typography>
+                          <Typography variant="body1">
+                            <strong>Description:</strong>{" "}
+                            {workOrderDetails.description}
+                          </Typography>
                         </Grid>
                         <Grid item xs={12} md={6}>
-                          <Typography variant="body1"><strong>Order Start Date:</strong> {new Date(workOrderDetails.orderStartDate).toLocaleDateString()}</Typography>
+                          <Typography variant="body1">
+                            <strong>Order Start Date:</strong>{" "}
+                            {new Date(
+                              workOrderDetails.orderStartDate
+                            ).toLocaleDateString()}
+                          </Typography>
                         </Grid>
                         <Grid item xs={12} md={6}>
-                          <Typography variant="body1"><strong>Expected Start Date:</strong> {new Date(workOrderDetails.expectedStartDate).toLocaleDateString()}</Typography>
+                          <Typography variant="body1">
+                            <strong>Expected Start Date:</strong>{" "}
+                            {new Date(
+                              workOrderDetails.expectedStartDate
+                            ).toLocaleDateString()}
+                          </Typography>
                         </Grid>
                         <Grid item xs={12} md={6}>
-                          <Typography variant="body1"><strong>Expected End Date:</strong> {new Date(workOrderDetails.expectedEndDate).toLocaleDateString()}</Typography>
+                          <Typography variant="body1">
+                            <strong>Expected End Date:</strong>{" "}
+                            {new Date(
+                              workOrderDetails.expectedEndDate
+                            ).toLocaleDateString()}
+                          </Typography>
                         </Grid>
                       </Grid>
                       <Divider sx={{ marginY: 2 }} />
@@ -77,19 +148,32 @@ const statusMap:any = { 1: "Created", 2: "Approved", 3: "Completed" };
 
                     {/* Project and Contractor Details */}
                     <Grid item>
-                      <H5 gutterBottom>
-                        Project and Contractor Details
-                      </H5>
+                      <H5 gutterBottom>Project and Contractor Details</H5>
                       <Divider sx={{ marginBottom: 2 }} />
                       <Grid container spacing={1}>
                         <Grid item xs={12} md={6}>
-                          <Typography variant="body1"><strong>Project:</strong> {workOrderDetails.Project.name}</Typography>
+                          <Typography variant="body1">
+                            <strong>Project:</strong>{" "}
+                            {workOrderDetails.Project.name}
+                          </Typography>
                         </Grid>
                         <Grid item xs={12} md={6}>
-                          <Typography variant="body1"><strong>Unit:</strong> {workOrderDetails.ContractorUnitAssignment.ContractorUnit.name}</Typography>
+                          <Typography variant="body1">
+                            <strong>Unit:</strong>{" "}
+                            {
+                              workOrderDetails.ContractorUnitAssignment
+                                .ContractorUnit.name
+                            }
+                          </Typography>
                         </Grid>
                         <Grid item xs={12} md={6}>
-                          <Typography variant="body1"><strong>Contractor:</strong> {workOrderDetails.ContractorUnitAssignment.Contractor.name}</Typography>
+                          <Typography variant="body1">
+                            <strong>Contractor:</strong>{" "}
+                            {
+                              workOrderDetails.ContractorUnitAssignment
+                                .Contractor.name
+                            }
+                          </Typography>
                         </Grid>
                       </Grid>
                       <Divider sx={{ marginY: 2 }} />
@@ -97,16 +181,15 @@ const statusMap:any = { 1: "Created", 2: "Approved", 3: "Completed" };
 
                     {/* User Details */}
                     <Grid item>
-                      <H5 gutterBottom>
-                        User Details
-                      </H5>
+                      <H5 gutterBottom>User Details</H5>
                       <Divider sx={{ marginBottom: 2 }} />
                       <Grid container spacing={1}>
                         <Grid item xs={12} md={6}>
-                          <Typography variant="body1"><strong>Creator:</strong> {workOrderDetails.creator.username}</Typography>
-                        </Grid>
-                        <Grid item xs={12} md={6}>
-                          <Typography variant="body1"><strong>Authorized User:</strong> {workOrderDetails.authorizedUser.username}</Typography>
+                          <Typography variant="body1">
+                            <strong>Authorized By:</strong>{" "}
+                            {workOrderDetails.authorizedUser.firstName}{" "}
+                            {workOrderDetails.authorizedUser.lastName}
+                          </Typography>
                         </Grid>
                       </Grid>
                     </Grid>
