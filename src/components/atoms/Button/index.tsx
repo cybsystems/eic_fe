@@ -14,12 +14,11 @@ interface ButtonProps {
 }
 
 const Button: React.FC<ButtonProps> = (props) => {
-  const { type, title, fullWidth, onClick, prefixIcon, disabled, isLoading,style={} } =
+  const { type, title, fullWidth, onClick, prefixIcon, disabled, isLoading } =
     props;
   return (
     <MUIButton
       startIcon={prefixIcon}
-      style={{minWidth:fullWidth?'100%':200,...style}}
       onClick={onClick}
       variant={"contained"}
       fullWidth={fullWidth}
