@@ -1,9 +1,10 @@
 /* eslint-disable @typescript-eslint/ban-ts-comment */
 /* eslint-disable @typescript-eslint/no-explicit-any */
+import Breadcrumbs from "@components/atoms/Breadcrumbs";
 import Button from "@components/atoms/Button";
 import DatePicker from "@components/atoms/DatePicker";
 import PageGridContainer from "@components/atoms/PageGridContainer";
-import PaperLoader from "@components/atoms/PaperLoader";
+import { WithLoaderWrapper } from "@components/molecules/WithLoaderWrapper";
 import {
   FormControl,
   FormHelperText,
@@ -22,9 +23,9 @@ import { formatError, showToast } from "@utils/index";
 import { useFormik } from "formik";
 import { useEffect, useState } from "react";
 import { useNavigate } from "react-router-dom";
+import { saveWorkOrder } from "./helper";
 import ProjectSection from "./ProjectSection";
 import { workOrderSchema } from "./schema";
-import { saveWorkOrder } from "./helper";
 
 const AddEditWorkOrderPage = () => {
   const [projects, setProjects] = useState<any[]>([]);
@@ -53,7 +54,7 @@ const AddEditWorkOrderPage = () => {
   const onSubmit = async (values: any) => {
     try {
       await saveWorkOrder(values);
-      showToast('success','Work order created sucessfully')
+      showToast("success", "Work order created sucessfully");
       navigate("/work-orders");
     } catch (error) {
       showToast("error", formatError(error));
@@ -95,154 +96,163 @@ const AddEditWorkOrderPage = () => {
     }
   };
 
-  if (loading) {
-    return <PaperLoader />;
-  }
-
   return (
     <PageGridContainer>
+      <Breadcrumbs
+        breadcrumbs={[
+          { label: "Home", href: "/" },
+          { label: "Work Orders", href: "/work-orders" },
+        ]}
+        title="Create Work Order"
+      />
       <Grid item xs={12}>
         <Paper elevation={3} sx={{ padding: 4 }}>
-          <form onSubmit={formik.handleSubmit}>
-            <Stack spacing={3}>
-              <FormControl fullWidth>
-                <TextField
-                  label="Title"
-                  variant="outlined"
-                  margin="normal"
-                  required
-                  fullWidth
-                  {...formik.getFieldProps("title")}
-                  error={Boolean(formik.errors.title && formik.touched.title)}
-                  helperText={formik.touched.title && formik.errors.title}
-                />
-              </FormControl>
-              <FormControl fullWidth style={{marginTop:0}}>
-                <TextField
-                  label="Description"
-                  variant="outlined"
-                  required
-                  margin="normal"
-                  fullWidth
-                  multiline
-                  rows={4}
-                  {...formik.getFieldProps("description")}
-                  error={Boolean(
-                    formik.errors.description && formik.touched.description
-                  )}
-                  helperText={
-                    formik.touched.description && formik.errors.description
+          <WithLoaderWrapper loading={loading}>
+            <form onSubmit={formik.handleSubmit}>
+              <Stack spacing={3}>
+                <FormControl fullWidth>
+                  <TextField
+                    label="Title"
+                    variant="outlined"
+                    margin="normal"
+                    required
+                    fullWidth
+                    {...formik.getFieldProps("title")}
+                    error={Boolean(formik.errors.title && formik.touched.title)}
+                    helperText={formik.touched.title && formik.errors.title}
+                  />
+                </FormControl>
+                <FormControl fullWidth style={{ marginTop: 0 }}>
+                  <TextField
+                    label="Description"
+                    variant="outlined"
+                    required
+                    margin="normal"
+                    fullWidth
+                    multiline
+                    rows={4}
+                    {...formik.getFieldProps("description")}
+                    error={Boolean(
+                      formik.errors.description && formik.touched.description
+                    )}
+                    helperText={
+                      formik.touched.description && formik.errors.description
+                    }
+                  />
+                </FormControl>
+                <FormControl fullWidth>
+                  <InputLabel id="authorizedBy-select-label" required>
+                    Authorized By
+                  </InputLabel>
+                  <Select
+                    labelId="authorizedBy-select-label"
+                    id="authorizedBy-select"
+                    label="Authorized By"
+                    {...formik.getFieldProps("authorizedBy")}
+                    value={formik.values.authorizedBy}
+                    error={Boolean(
+                      formik.errors.authorizedBy && formik.touched.authorizedBy
+                    )}
+                  >
+                    {users.map((user) => (
+                      <MenuItem key={user.id} value={user.id}>
+                        {user.firstName} {user.lastName}
+                      </MenuItem>
+                    ))}
+                  </Select>
+                  {formik.touched.authorizedBy &&
+                    formik.errors.authorizedBy && (
+                      <FormHelperText error>
+                        {formik.errors.authorizedBy}
+                      </FormHelperText>
+                    )}
+                </FormControl>
+                <DatePicker
+                  label="Order Start Date *"
+                  value={formik.values.orderStartDate}
+                  onChange={(value) =>
+                    formik.setFieldValue("orderStartDate", value)
+                  }
+                  error={
+                    formik.touched.orderStartDate &&
+                    formik.errors.orderStartDate
                   }
                 />
-              </FormControl>
-              <FormControl fullWidth>
-                <InputLabel id="authorizedBy-select-label" required>
-                  Authorized By
-                </InputLabel>
-                <Select
-                  labelId="authorizedBy-select-label"
-                  id="authorizedBy-select"
-                  label="Authorized By"
-                  {...formik.getFieldProps("authorizedBy")}
-                  value={formik.values.authorizedBy}
-                  error={Boolean(
-                    formik.errors.authorizedBy && formik.touched.authorizedBy
-                  )}
-                >
-                  {users.map((user) => (
-                    <MenuItem key={user.id} value={user.id}>
-                      {user.firstName} {user.lastName}
-                    </MenuItem>
-                  ))}
-                </Select>
-                {formik.touched.authorizedBy && formik.errors.authorizedBy && (
-                  <FormHelperText error>
-                    {formik.errors.authorizedBy}
-                  </FormHelperText>
-                )}
-              </FormControl>
-              <DatePicker
-                label="Order Start Date *"
-                value={formik.values.orderStartDate}
-                onChange={(value) =>
-                  formik.setFieldValue("orderStartDate", value)
-                }
-                error={
-                  formik.touched.orderStartDate && formik.errors.orderStartDate
-                }
-              />
 
-              <DatePicker
-                label="Expected Start Date *"
-                value={formik.values.expectedStartDate}
-                onChange={(value) =>
-                  formik.setFieldValue("expectedStartDate", value)
-                }
-                error={
-                  formik.touched.expectedStartDate &&
-                  formik.errors.expectedStartDate
-                }
-              />
-
-              <DatePicker
-                label="Expected End Date *"
-                value={formik.values.expectedEndDate}
-                onChange={(value) =>
-                  formik.setFieldValue("expectedEndDate", value)
-                }
-                error={
-                  formik.touched.expectedEndDate &&
-                  formik.errors.expectedEndDate
-                }
-              />
-              <FormControl fullWidth>
-                <InputLabel id="project-select-label" required>Project</InputLabel>
-                <Select
-                  labelId="project-select-label"
-                  id="project-select"
-                  label="Project"
-                  {...formik.getFieldProps("projectId")}
-                  onChange={onProjectSelect}
-                  value={formik.values.projectId}
-                  error={Boolean(
-                    formik.errors.projectId && formik.touched.projectId
-                  )}
-                >
-                  {projects.map((project) => (
-                    <MenuItem key={project.id} value={project.id}>
-                      {project.name}
-                    </MenuItem>
-                  ))}
-                </Select>
-                {formik.touched.projectId && formik.errors.projectId && (
-                  <FormHelperText error>
-                    {formik.errors.projectId}
-                  </FormHelperText>
-                )}
-              </FormControl>
-
-              <ProjectSection
-                formik={formik}
-                selectedProject={selectedProject}
-                unitsLoading={unitsLoading}
-                contractorUnits={contractorUnits}
-              />
-
-              <Stack direction="row-reverse" spacing={2}>
-                <Button
-                  type="primary"
-                  title="Create Workorder"
-                  onClick={formik.handleSubmit}
-                  isLoading={formik.isSubmitting}
+                <DatePicker
+                  label="Expected Start Date *"
+                  value={formik.values.expectedStartDate}
+                  onChange={(value) =>
+                    formik.setFieldValue("expectedStartDate", value)
+                  }
+                  error={
+                    formik.touched.expectedStartDate &&
+                    formik.errors.expectedStartDate
+                  }
                 />
-                <Button
-                  type="secondary"
-                  onClick={() => navigate("/work-orders")}
-                  title="Cancel"
+
+                <DatePicker
+                  label="Expected End Date *"
+                  value={formik.values.expectedEndDate}
+                  onChange={(value) =>
+                    formik.setFieldValue("expectedEndDate", value)
+                  }
+                  error={
+                    formik.touched.expectedEndDate &&
+                    formik.errors.expectedEndDate
+                  }
                 />
+                <FormControl fullWidth>
+                  <InputLabel id="project-select-label" required>
+                    Project
+                  </InputLabel>
+                  <Select
+                    labelId="project-select-label"
+                    id="project-select"
+                    label="Project"
+                    {...formik.getFieldProps("projectId")}
+                    onChange={onProjectSelect}
+                    value={formik.values.projectId}
+                    error={Boolean(
+                      formik.errors.projectId && formik.touched.projectId
+                    )}
+                  >
+                    {projects.map((project) => (
+                      <MenuItem key={project.id} value={project.id}>
+                        {project.name}
+                      </MenuItem>
+                    ))}
+                  </Select>
+                  {formik.touched.projectId && formik.errors.projectId && (
+                    <FormHelperText error>
+                      {formik.errors.projectId}
+                    </FormHelperText>
+                  )}
+                </FormControl>
+
+                <ProjectSection
+                  formik={formik}
+                  selectedProject={selectedProject}
+                  unitsLoading={unitsLoading}
+                  contractorUnits={contractorUnits}
+                />
+
+                <Stack direction="row-reverse" spacing={2}>
+                  <Button
+                    type="primary"
+                    title="Create Workorder"
+                    onClick={formik.handleSubmit}
+                    isLoading={formik.isSubmitting}
+                  />
+                  <Button
+                    type="secondary"
+                    onClick={() => navigate("/work-orders")}
+                    title="Cancel"
+                  />
+                </Stack>
               </Stack>
-            </Stack>
-          </form>
+            </form>
+          </WithLoaderWrapper>
         </Paper>
       </Grid>
     </PageGridContainer>

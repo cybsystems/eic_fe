@@ -12,6 +12,7 @@ import { showToast } from '@utils/index';
 import { createUser, getInitialData, updateUser } from './helper';
 import PermissionsForm from './PermissionsForm';
 import { validationSchema } from './schema';
+import Breadcrumbs from '@components/atoms/Breadcrumbs';
 
 interface Permission {
   id: string; // Unique identifier for the permission
@@ -102,6 +103,13 @@ const UserFormPage: React.FC = () => {
 
   return (
     <PageGridContainer>
+        <Breadcrumbs
+        breadcrumbs={[
+          { label: "Home", href: "/" },
+          { label: "Users", href: "/users" },
+        ]}
+        title={editUser?`${formik.values.firstName} ${formik.values.lastName}`:'Create User'}
+      />
       <Grid item xs={12}>
         <Paper elevation={3} sx={{ padding: 4 }}>
           <form onSubmit={formik.handleSubmit}>

@@ -1,5 +1,9 @@
 /* eslint-disable @typescript-eslint/no-explicit-any */
+import Button from "@components/atoms/Button";
 import PageGridContainer from "@components/atoms/PageGridContainer";
+import { H5 } from "@components/atoms/Typographies";
+import { WithLoaderWrapper } from "@components/molecules/WithLoaderWrapper";
+import useDeviceType from "@hooks/useMediaDevice";
 import {
   Box,
   Card,
@@ -12,15 +16,14 @@ import { formatError, showToast } from "@utils/index";
 import { useEffect, useState } from "react";
 import { useParams } from "react-router-dom";
 import { getWorkOrderDetails, updateWorkOrderStatus } from "./helper";
-import PaperLoader from "@components/atoms/PaperLoader";
-import { H5 } from "@components/atoms/Typographies";
-import Button from "@components/atoms/Button";
+import Breadcrumbs from "@components/atoms/Breadcrumbs";
 
 const WorkOrderDetailsPage = () => {
   const [workOrderDetails, setWorkOrderDetails] = useState<any>(null);
   const [loading, setLoading] = useState(true);
   const [statusLoader, setStatusLoader] = useState(false);
   const { id: workOrderId } = useParams();
+  const { isMobile } = useDeviceType();
 
   const loadWorkOrderDetails = async (workOrderId: string) => {
     try {
@@ -46,8 +49,8 @@ const WorkOrderDetailsPage = () => {
       try {
         setStatusLoader(true);
         await updateWorkOrderStatus(workOrderId, 3);
-        setWorkOrderDetails({...workOrderDetails,status:3})
-        showToast('success','Work order completed')
+        setWorkOrderDetails({ ...workOrderDetails, status: 3 });
+        showToast("success", "Work order completed");
       } catch (error) {
         showToast("error", formatError(error));
       } finally {
@@ -56,24 +59,25 @@ const WorkOrderDetailsPage = () => {
       }
     }
   };
-
-  if (loading) {
-    return <PaperLoader />;
-  }
+ 
 
   const statusMap: any = { 1: "Created", 2: "Approved", 3: "Completed" };
 
   return (
     <PageGridContainer>
+        <Breadcrumbs
+        breadcrumbs={[
+          { label: "Home", href: "/" },
+          { label: "Work Orders", href: "/work-orders" },
+        ]}
+        title={workOrderDetails?.title}
+      />
       <Grid container spacing={3}>
-        <Grid item xs={12}>
-          <Typography variant="h4" gutterBottom>
-            Work Order Details
-          </Typography>
-        </Grid>
+        
         <Grid item xs={12}>
           <Card elevation={3}>
             <CardContent>
+              <WithLoaderWrapper loading={loading}> 
               {workOrderDetails && (
                 <Box>
                   <Grid container spacing={2} direction="column">
@@ -89,12 +93,13 @@ const WorkOrderDetailsPage = () => {
                           <H5 gutterBottom>General Information</H5>
                         </Grid>
                         {workOrderDetails.status !== 3 && (
-                          <Grid item>
+                          <Grid item flex={isMobile ? 1 : 0.2}>
                             <Button
                               onClick={onStatusChangeClicked}
                               type="secondary"
                               title="Mark as Completed"
                               isLoading={statusLoader}
+                              fullWidth
                             />
                           </Grid>
                         )}
@@ -196,6 +201,7 @@ const WorkOrderDetailsPage = () => {
                   </Grid>
                 </Box>
               )}
+              </WithLoaderWrapper>
             </CardContent>
           </Card>
         </Grid>
