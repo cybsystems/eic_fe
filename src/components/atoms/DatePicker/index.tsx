@@ -12,6 +12,7 @@ interface DatePickerProps {
   onChange: (value: any) => void;
   error: any;
   fullWidth?:boolean
+  
 }
 const DatePicker = (props: DatePickerProps) => {
   const { label,value,onChange,error } = props;

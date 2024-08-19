@@ -61,14 +61,14 @@ const AddEditWorkOrderPage = () => {
   };
   const formik = useFormik({
     initialValues: {
-      title: "Work Order 2",
+      title: "",
       projectId: "",
       contractorUnit: "",
-      authorizedBy: 5,
+      authorizedBy: "",
       orderStartDate: undefined,
       expectedStartDate: undefined,
       expectedEndDate: undefined,
-      description: "Work Order 2",
+      description: "",
     },
     validationSchema: workOrderSchema,
     onSubmit: onSubmit,
@@ -110,16 +110,18 @@ const AddEditWorkOrderPage = () => {
                   label="Title"
                   variant="outlined"
                   margin="normal"
+                  required
                   fullWidth
                   {...formik.getFieldProps("title")}
                   error={Boolean(formik.errors.title && formik.touched.title)}
                   helperText={formik.touched.title && formik.errors.title}
                 />
               </FormControl>
-              <FormControl fullWidth>
+              <FormControl fullWidth style={{marginTop:0}}>
                 <TextField
                   label="Description"
                   variant="outlined"
+                  required
                   margin="normal"
                   fullWidth
                   multiline
@@ -134,7 +136,7 @@ const AddEditWorkOrderPage = () => {
                 />
               </FormControl>
               <FormControl fullWidth>
-                <InputLabel id="authorizedBy-select-label">
+                <InputLabel id="authorizedBy-select-label" required>
                   Authorized By
                 </InputLabel>
                 <Select
@@ -160,7 +162,7 @@ const AddEditWorkOrderPage = () => {
                 )}
               </FormControl>
               <DatePicker
-                label="Order Start Date"
+                label="Order Start Date *"
                 value={formik.values.orderStartDate}
                 onChange={(value) =>
                   formik.setFieldValue("orderStartDate", value)
@@ -171,7 +173,7 @@ const AddEditWorkOrderPage = () => {
               />
 
               <DatePicker
-                label="Expected Start Date"
+                label="Expected Start Date *"
                 value={formik.values.expectedStartDate}
                 onChange={(value) =>
                   formik.setFieldValue("expectedStartDate", value)
@@ -183,7 +185,7 @@ const AddEditWorkOrderPage = () => {
               />
 
               <DatePicker
-                label="Expected End Date"
+                label="Expected End Date *"
                 value={formik.values.expectedEndDate}
                 onChange={(value) =>
                   formik.setFieldValue("expectedEndDate", value)
@@ -194,7 +196,7 @@ const AddEditWorkOrderPage = () => {
                 }
               />
               <FormControl fullWidth>
-                <InputLabel id="project-select-label">Project</InputLabel>
+                <InputLabel id="project-select-label" required>Project</InputLabel>
                 <Select
                   labelId="project-select-label"
                   id="project-select"

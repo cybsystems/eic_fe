@@ -49,7 +49,7 @@ const ProjectSection = (props: ProjectSectionProps) => {
       ) : (
         contractorUnits.length > 0 && (
           <FormControl fullWidth>
-            <InputLabel id="contractor-units-label">Contractor Unit</InputLabel>
+            <InputLabel required id="contractor-units-label">Contractor Unit</InputLabel>
             <Select
               labelId="contractor-units-label"
               id="contractor-units-select"
