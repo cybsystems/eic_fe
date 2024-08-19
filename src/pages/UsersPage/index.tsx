@@ -16,15 +16,20 @@ const columns = [
   { field: "id", headerName: "ID", width: 90 },
   {
     field: "firstName",
-    headerName: "First name",
+    headerName: "First Name",
+    flex:0.5,
   },
   {
     field: "lastName",
-    headerName: "Last name",
+    headerName: "Last Name",
+    flex:0.5,
+
   },
   {
     field: "email",
     headerName: "Email",
+    flex:1,
+
   },
 ];
 
