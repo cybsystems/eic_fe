@@ -14,6 +14,7 @@ import UsersPage from "@pages/UsersPage";
 import AddEditUserPage from "@pages/UsersPage/AddEditUserPage";
 import WorkOrderPage from "@pages/WorkOrderPages";
 import AddEditWorkOrderPage from "@pages/WorkOrderPages/AddEditWorkOrderPages";
+import WorkOrderDetailsPage from "@pages/WorkOrderPages/WorkOrderDetailsPage";
 import { Route, Routes } from "react-router-dom";
 
 const AppPages = () => {
@@ -47,7 +48,7 @@ const AppPages = () => {
 
 
         <Route path="/work-orders" element={<WorkOrderPage/>}/>
-        <Route path="/work-orders:id" element={<AddEditWorkOrderPage />} />
+        <Route path="/work-orders/:id" element={<WorkOrderDetailsPage />} />
         <Route path="/work-orders/new" element={<AddEditWorkOrderPage />} />
 
 
