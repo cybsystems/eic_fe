@@ -1,3 +1,4 @@
+/* eslint-disable @typescript-eslint/ban-ts-comment */
 import { useState } from 'react';
 import { Domain } from '@mui/icons-material';
 import AssignmentIcon from '@mui/icons-material/Assignment';
@@ -8,7 +9,7 @@ import StoreIcon from '@mui/icons-material/Store';
 import WorkIcon from '@mui/icons-material/Work';
 import ExpandLess from '@mui/icons-material/ExpandLess';
 import ExpandMore from '@mui/icons-material/ExpandMore';
-import BusinessIcon from '@mui/icons-material/Business';
+// import BusinessIcon from '@mui/icons-material/Business';
 import Divider from '@mui/material/Divider';
 import List from '@mui/material/List';
 import ListItem from '@mui/material/ListItem';
@@ -33,14 +34,15 @@ const DrawerContent = ({ open }: { open: boolean }) => {
     { text: 'Stocks', icon: <StoreIcon />, path: '/stocks' },
     { text: 'CRM', icon: <ContactMailIcon />, path: '/crm' },
     { text: 'Users', icon: <PeopleIcon />, path: '/users' },
-    {
-      text: 'Masters',
-      icon: <BusinessIcon />,
-      subItems: [
-        { text: 'Projects', icon: <Domain />, path: '/projects' },
-        { text: 'Firms', icon: <Domain />, path: '/firms' },
-      ],
-    },
+    { text: 'Projects', icon: <Domain />, path: '/projects' },
+    // {
+    //   text: 'Masters',
+    //   icon: <BusinessIcon />,
+    //   subItems: [
+    //     { text: 'Projects', icon: <Domain />, path: '/projects' },
+    //     { text: 'Firms', icon: <Domain />, path: '/firms' },
+    //   ],
+    // },
     { text: 'Reports', icon: <AssignmentIcon />, path: '/reports' },
   ];
 
@@ -49,6 +51,7 @@ const DrawerContent = ({ open }: { open: boolean }) => {
       <Divider />
       <List>
         {menuItems.map((item) => {
+          //@ts-ignore
           if (item.subItems) {
             // Handle menu item with sub-items (e.g., "Masters")
             return (
@@ -77,7 +80,10 @@ const DrawerContent = ({ open }: { open: boolean }) => {
                 </ListItem>
                 <Collapse in={openMasters} timeout="auto" unmountOnExit>
                   <List component="div" disablePadding>
-                    {item.subItems.map((subItem) => {
+                    
+                    {
+                    //@ts-ignore
+                    item.subItems.map((subItem) => {
                       const isActiveSub = location.pathname.startsWith(subItem.path);
 
                       return (
