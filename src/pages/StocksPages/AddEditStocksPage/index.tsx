@@ -73,7 +73,7 @@ const AddEditStockPage = () => {
       <Breadcrumbs
         breadcrumbs={[
           { label: "Home", href: "/" },
-          { label: "CRM", href: "/stocks" },
+          { label: "Stocks", href: "/stocks" },
         ]}
         title={edit ? formik.values.item : "Create Item"}
       />
