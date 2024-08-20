@@ -10,13 +10,15 @@ import AddEditProjectPage from "@pages/ProjectsPages/AddEditProjectPages";
 import AddContractorPage from "@pages/ProjectsPages/AddEditProjectPages/AddContractor";
 import AddUnitsPage from "@pages/ProjectsPages/AddEditProjectPages/AddUnitsPage";
 import ProjectDetailsPage from "@pages/ProjectsPages/ProjectDetailsPage";
+import StocksPages from "@pages/StocksPages";
+import AddEditStockPage from "@pages/StocksPages/AddEditStocksPage";
 import UsersPage from "@pages/UsersPage";
 import AddEditUserPage from "@pages/UsersPage/AddEditUserPage";
 import WorkOrderPage from "@pages/WorkOrderPages";
 import AddEditWorkOrderPage from "@pages/WorkOrderPages/AddEditWorkOrderPages";
 import WorkOrderDetailsPage from "@pages/WorkOrderPages/WorkOrderDetailsPage";
 import { Route, Routes } from "react-router-dom";
-
+ 
 const AppPages = () => {
   return (
     <Routes>
@@ -51,6 +53,10 @@ const AppPages = () => {
         <Route path="/work-orders/:id" element={<WorkOrderDetailsPage />} />
         <Route path="/work-orders/new" element={<AddEditWorkOrderPage />} />
 
+
+
+        <Route path="/stocks" element={<StocksPages/>}/>
+        <Route path="/stocks/new" element={<AddEditStockPage/>}/>
 
 
 
