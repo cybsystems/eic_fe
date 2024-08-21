@@ -21,7 +21,7 @@ const DataTable: React.FC<DataTableProps> = ({
   // Number of rows to display in the skeleton
 
   return (
-    <Box sx={{ width: "100%", height: 400 }}>
+    <Box sx={{ width: "100%", height: 500 }}>
       <DataGrid
         loading={loading}
         rows={rows}
