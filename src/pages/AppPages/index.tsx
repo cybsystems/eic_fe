@@ -14,6 +14,8 @@ import StocksPages from "@pages/StocksPages";
 import AddEditStockPage from "@pages/StocksPages/AddEditStocksPage";
 import UsersPage from "@pages/UsersPage";
 import AddEditUserPage from "@pages/UsersPage/AddEditUserPage";
+import VendorsPage from "@pages/VendorsPages";
+import AddEditVendorPage from "@pages/VendorsPages/AddEditVendorsPages";
 import WorkOrderPage from "@pages/WorkOrderPages";
 import AddEditWorkOrderPage from "@pages/WorkOrderPages/AddEditWorkOrderPages";
 import WorkOrderDetailsPage from "@pages/WorkOrderPages/WorkOrderDetailsPage";
@@ -57,6 +59,13 @@ const AppPages = () => {
 
         <Route path="/stocks" element={<StocksPages/>}/>
         <Route path="/stocks/new" element={<AddEditStockPage/>}/>
+
+
+
+        <Route path="/vendors" element={<VendorsPage/>}/>
+        <Route path="/vendors/:id" element={<AddEditVendorPage/>}/>
+
+        <Route path="/vendors/new" element={<AddEditVendorPage/>}/>
 
 
 
