@@ -17,6 +17,7 @@ import ListItemButton from '@mui/material/ListItemButton';
 import ListItemIcon from '@mui/material/ListItemIcon';
 import ListItemText from '@mui/material/ListItemText';
 import Collapse from '@mui/material/Collapse';
+import InputIcon from '@mui/icons-material/Input';
 import { useLocation, useNavigate } from 'react-router-dom';
 
 const DrawerContent = ({ open }: { open: boolean }) => {
@@ -35,7 +36,7 @@ const DrawerContent = ({ open }: { open: boolean }) => {
     { text: 'CRM', icon: <ContactMailIcon />, path: '/crm' },
     { text: 'Users', icon: <PeopleIcon />, path: '/users' },
     { text: 'Vendors', icon: <PeopleIcon />, path: '/vendors' },
-    { text: 'Inwards', icon: <PeopleIcon />, path: '/inwards' },
+    { text: 'Inwards', icon: <InputIcon />, path: '/inwards' },
 
     { text: 'Projects', icon: <Domain />, path: '/projects' },
     // {
