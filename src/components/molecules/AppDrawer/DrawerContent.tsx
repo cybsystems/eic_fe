@@ -35,6 +35,7 @@ const DrawerContent = ({ open }: { open: boolean }) => {
     { text: 'CRM', icon: <ContactMailIcon />, path: '/crm' },
     { text: 'Users', icon: <PeopleIcon />, path: '/users' },
     { text: 'Vendors', icon: <PeopleIcon />, path: '/vendors' },
+    { text: 'Inwards', icon: <PeopleIcon />, path: '/inwards' },
 
     { text: 'Projects', icon: <Domain />, path: '/projects' },
     // {
