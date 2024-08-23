@@ -18,7 +18,7 @@ import ListItemIcon from '@mui/material/ListItemIcon';
 import ListItemText from '@mui/material/ListItemText';
 import Collapse from '@mui/material/Collapse';
 import InputIcon from '@mui/icons-material/Input';
-import OutputIcon from '@mui/icons-material/Output';
+import OutputIcon from '@mui/icons-material/Send';
 
 import { useLocation, useNavigate } from 'react-router-dom';
 
