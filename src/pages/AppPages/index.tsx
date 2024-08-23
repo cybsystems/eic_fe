@@ -5,6 +5,7 @@ import FirmsPage from "@pages/FirmsPages";
 import AddEditFirmPage from "@pages/FirmsPages/AddEditFirmPage";
 import HomePage from "@pages/HomePage";
 import AddInwardPage from "@pages/MaterialInwardPages/AddInwardPage";
+import MaterialIssuePage from "@pages/MaterialIssuePage";
 import PageNotFound from "@pages/PageNotFound";
 import ProjectsPages from "@pages/ProjectsPages";
 import AddEditProjectPage from "@pages/ProjectsPages/AddEditProjectPages";
@@ -71,6 +72,7 @@ const AppPages = () => {
 
 
         <Route path="/inwards/" element={<AddInwardPage/>}/>
+        <Route path="/material-issue/" element={<MaterialIssuePage/>}/>
 
 
         <Route path="*" element={<PageNotFound />} />

@@ -18,6 +18,8 @@ import ListItemIcon from '@mui/material/ListItemIcon';
 import ListItemText from '@mui/material/ListItemText';
 import Collapse from '@mui/material/Collapse';
 import InputIcon from '@mui/icons-material/Input';
+import OutputIcon from '@mui/icons-material/Output';
+
 import { useLocation, useNavigate } from 'react-router-dom';
 
 const DrawerContent = ({ open }: { open: boolean }) => {
@@ -37,6 +39,8 @@ const DrawerContent = ({ open }: { open: boolean }) => {
     { text: 'Users', icon: <PeopleIcon />, path: '/users' },
     { text: 'Vendors', icon: <PeopleIcon />, path: '/vendors' },
     { text: 'Inwards', icon: <InputIcon />, path: '/inwards' },
+    { text: 'Dispatch', icon: <OutputIcon />, path: '/dispatch' },
+    { text: 'Material Issue', icon: <OutputIcon />, path: '/material-issue' },
 
     { text: 'Projects', icon: <Domain />, path: '/projects' },
     // {
