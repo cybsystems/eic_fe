@@ -48,8 +48,11 @@ const AddInwardPage: React.FC = () => {
     });
     await saveInward({inwards:formatPayload});
     showToast("success", "Inward Sucessfully");
-    navigate("/inwards");
-  };
+    setSource(null)
+    setSelectedContractor(null)
+    setSelectedVendor(null)
+    formik.resetForm()
+   };
 
   const formik = useFormik<any>({
     initialValues: {
