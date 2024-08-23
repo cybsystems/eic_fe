@@ -33,7 +33,10 @@ const MaterialIssuePage = () => {
         const { userInfoResponse, itemsResponse, wareHousesResponse } =
           await loadInitialData();
         setCurrentUser(userInfoResponse.data);
-        setWareHouses(wareHousesResponse.data);
+        const formatedWareHouses = wareHousesResponse.data.filter(
+          (i:any) => i.id !== userInfoResponse.data.wareHouse.id
+        );
+        setWareHouses(formatedWareHouses);
         setItems(itemsResponse.data);
       } catch (error) {
         showToast("error", formatError(error));
@@ -123,7 +126,7 @@ const MaterialIssuePage = () => {
                           }
                         >
                           {wareHouses.map((wareHouse: any) => (
-                            <MenuItem key={wareHouse.id} disabled={currentUser?.wareHouse?.id===wareHouse.id} value={wareHouse.id}>
+                            <MenuItem key={wareHouse.id}  value={wareHouse.id}>
                               {wareHouse.name}
                             </MenuItem>
                           ))}
