@@ -123,7 +123,7 @@ const MaterialIssuePage = () => {
                           }
                         >
                           {wareHouses.map((wareHouse: any) => (
-                            <MenuItem key={wareHouse.id} value={wareHouse.id}>
+                            <MenuItem key={wareHouse.id} disabled={currentUser?.wareHouse?.id===wareHouse.id} value={wareHouse.id}>
                               {wareHouse.name}
                             </MenuItem>
                           ))}
