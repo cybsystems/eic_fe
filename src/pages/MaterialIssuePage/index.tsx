@@ -63,10 +63,11 @@ const MaterialIssuePage = () => {
     toWareHouseId: "",
     items: [{ itemId: "", quantity: null }],
   };
-  const onSubmit = async (values: any) => {
+  const onSubmit = async (values: any,formik:any) => {
     try {
       await saveMaterailIssue(values);
       showToast("success", "Material Issue Sent");
+      formik.resetForm();
     } catch (error) {
       showToast("error", formatError(error));
     }
@@ -90,7 +91,7 @@ const MaterialIssuePage = () => {
               validationSchema={validationSchema}
               onSubmit={onSubmit}
             >
-              {({ values, touched, errors, handleChange, handleSubmit }) => (
+              {({ values, touched, errors, handleChange, handleSubmit,isSubmitting }) => (
                 <form onSubmit={handleSubmit}>
                   <Stack spacing={2}>
                     <Grid container spacing={2}>
@@ -220,6 +221,7 @@ const MaterialIssuePage = () => {
                           type="primary"
                           title="Submit"
                           onClick={handleSubmit}
+                          isLoading={isSubmitting}
                         />
                       </Stack>
                     )}
