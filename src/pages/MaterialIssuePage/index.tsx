@@ -12,7 +12,7 @@ import {
   IconButton,
 } from "@mui/material";
 import { useEffect, useState } from "react";
-import { loadInitialData } from "./helper";
+import { loadInitialData, saveMaterailIssue } from "./helper";
 import { formatError, showToast } from "@utils/index";
 import CenterLoader from "@components/atoms/CenterLoader";
 import Button from "@components/atoms/Button";
@@ -49,7 +49,7 @@ const MaterialIssuePage = () => {
     items: Yup.array()
       .of(
         Yup.object({
-          itemId: Yup.number().required("Item is required"),
+            itemId: Yup.number().required("Item is required"),
           quantity: Yup.number()
             .required("Quantity is required")
             .min(1, "Quantity must be at least 1"),
@@ -63,7 +63,14 @@ const MaterialIssuePage = () => {
     toWareHouseId: "",
     items: [{ itemId: "", quantity: null }],
   };
-
+  const onSubmit = async (values: any) => {
+    try {
+      await saveMaterailIssue(values);
+      showToast("success", "Material Issue Sent");
+    } catch (error) {
+      showToast("error", formatError(error));
+    }
+  };
   return (
     <PageGridContainer>
       <Breadcrumbs
@@ -81,18 +88,9 @@ const MaterialIssuePage = () => {
             <Formik
               initialValues={initialValues}
               validationSchema={validationSchema}
-              onSubmit={(values) => {
-                console.log(values);
-                // Handle form submission
-              }}
+              onSubmit={onSubmit}
             >
-              {({
-                values,
-                touched,
-                errors,
-                handleChange,
-                handleSubmit,
-              }) => (
+              {({ values, touched, errors, handleChange, handleSubmit }) => (
                 <form onSubmit={handleSubmit}>
                   <Stack spacing={2}>
                     <Grid container spacing={2}>
@@ -133,94 +131,98 @@ const MaterialIssuePage = () => {
                     </Grid>
 
                     {/* Items Field */}
-                    {values?.toWareHouseId && <FieldArray
-                      name="items"
-                      render={(arrayHelpers) => (
-                        <>
-                          {values.items.map((item, index) => (
-                            <Grid container spacing={2} key={index}>
-                              <Grid item xs={12} sm={6}>
-                                <TextField
-                                  select
-                                  label="Select Item"
-                                  fullWidth
-                                  required
-                                  name={`items.${index}.itemId`}
-                                  value={item.itemId}
-                                  onChange={handleChange}
-                                  error={
-                                    touched.items?.[index]?.itemId &&
-                                    //@ts-ignore
-                                    Boolean(errors.items?.[index]?.itemId)
-                                  }
-                                  helperText={
-                                    touched.items?.[index]?.itemId &&
-                                    //@ts-ignore
-                                    errors.items?.[index]?.itemId
-                                  }
-                                >
-                                  {items.map((item: any) => (
-                                    <MenuItem
-                                      key={item.id}
-                                      value={item.id}
-                                    >
-                                      {item.item}
-                                    </MenuItem>
-                                  ))}
-                                </TextField>
+                    {values?.toWareHouseId && (
+                      <FieldArray
+                        name="items"
+                        render={(arrayHelpers) => (
+                          <>
+                            {values.items.map((item, index) => (
+                              <Grid container spacing={2} key={index}>
+                                <Grid item xs={12} sm={6}>
+                                  <TextField
+                                    select
+                                    label="Select Item"
+                                    fullWidth
+                                    required
+                                    name={`items.${index}.itemId`}
+                                    value={item.itemId}
+                                    onChange={handleChange}
+                                    error={
+                                      touched.items?.[index]?.itemId &&
+                                      //@ts-ignore
+                                      Boolean(errors.items?.[index]?.itemId)
+                                    }
+                                    helperText={
+                                      touched.items?.[index]?.itemId &&
+                                      //@ts-ignore
+                                      errors.items?.[index]?.itemId
+                                    }
+                                  >
+                                    {items.map((item: any) => (
+                                      <MenuItem key={item.id} value={item.id}>
+                                        {item.item}
+                                      </MenuItem>
+                                    ))}
+                                  </TextField>
+                                </Grid>
+                                <Grid item xs={12} sm={4}>
+                                  <TextField
+                                    label="Quantity"
+                                    fullWidth
+                                    required
+                                    type="number"
+                                    name={`items.${index}.quantity`}
+                                    value={item.quantity}
+                                    onChange={handleChange}
+                                    error={
+                                      touched.items?.[index]?.quantity &&
+                                      //@ts-ignore
+                                      Boolean(errors.items?.[index]?.quantity)
+                                    }
+                                    helperText={
+                                      touched.items?.[index]?.quantity &&
+                                      //@ts-ignore
+                                      errors.items?.[index]?.quantity
+                                    }
+                                  />
+                                </Grid>
+                                <Grid item xs={12} sm={2}>
+                                  <IconButton
+                                    color="secondary"
+                                    onClick={() => arrayHelpers.remove(index)}
+                                    disabled={values.items.length === 1}
+                                  >
+                                    <DeleteIcon />
+                                  </IconButton>
+                                </Grid>
                               </Grid>
-                              <Grid item xs={12} sm={4}>
-                                <TextField
-                                  label="Quantity"
-                                  fullWidth
-                                  required
-                                  type="number"
-                                  name={`items.${index}.quantity`}
-                                  value={item.quantity}
-                                  onChange={handleChange}
-                                  error={
-                                    touched.items?.[index]?.quantity &&
-                                    //@ts-ignore
-                                    Boolean(errors.items?.[index]?.quantity)
-                                  }
-                                  helperText={
-                                    touched.items?.[index]?.quantity &&
-                                    //@ts-ignore
-                                    errors.items?.[index]?.quantity
-                                  }
-                                />
-                              </Grid>
-                              <Grid item xs={12} sm={2}>
-                                <IconButton
-                                  color="secondary"
-                                  onClick={() => arrayHelpers.remove(index)}
-                                  disabled={values.items.length === 1}
-                                >
-                                  <DeleteIcon />
-                                </IconButton>
-                              </Grid>
-                            </Grid>
-                          ))}
-                          <Stack direction={"row-reverse"}>
-                            <Button
-                              type="secondary"
-                              prefixIcon={<AddIcon />}
-                              onClick={() =>
-                                arrayHelpers.push({ itemId: "", quantity: null })
-                              }
-                              title="Add Item"
-                            />
-                          </Stack>
-                        </>
-                      )}
-                    />}
-                    {values?.toWareHouseId && <Stack direction={"row-reverse"}>
-                      <Button
-                        type="primary"
-                        title="Submit"
-                        onClick={handleSubmit}
+                            ))}
+                            <Stack direction={"row-reverse"}>
+                              <Button
+                                type="secondary"
+                                prefixIcon={<AddIcon />}
+                                onClick={() =>
+                                  arrayHelpers.push({
+                                    itemId: "",
+                                    quantity: null,
+                                  })
+                                }
+                                title="Add Item"
+                              />
+                            </Stack>
+                          </>
+                        )}
                       />
-                    </Stack>}
+                    )}
+                    {values?.toWareHouseId && (
+                      <Stack direction={"row-reverse"}>
+                        <Button
+                          type="primary"
+                          title="Submit"
+                          onClick={handleSubmit}
+                        />
+                      </Stack>
+                    )}
                   </Stack>
                 </form>
               )}
