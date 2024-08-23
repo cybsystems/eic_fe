@@ -214,8 +214,8 @@ const AddInwardPage: React.FC = () => {
                           <Stack spacing={3}>
                             {formik.values.inwards.map(
                               (inward: any, index: number) => (
-                                <Grid container spacing={2} key={index}>
-                                  <Grid item xs={12} sm={3}>
+                                <Grid container spacing={2} key={index} alignItems={'center'}>
+                                  <Grid item xs={12} sm={5}>
                                     <TextField
                                       select
                                       disabled={!!disableItems}
@@ -257,7 +257,7 @@ const AddInwardPage: React.FC = () => {
                                       ))}
                                     </TextField>
                                   </Grid>
-                                  <Grid item xs={12} sm={2}>
+                                  <Grid item xs={12} sm={5}>
                                     <TextField
                                       label="Quantity"
                                       disabled={!!disableItems}
@@ -290,18 +290,18 @@ const AddInwardPage: React.FC = () => {
                                     />
                                   </Grid>
 
-                                  <Grid item xs={12} sm={1}>
+                                  {!disableItems && <Grid item xs={12} sm={1}>
                                     <Button
                                       type="secondary"
                                       title="Remove"
                                       onClick={() => arrayHelpers.remove(index)}
-                                      disabled={loading || !!disableItems}
+                                      disabled={loading}
                                     />
-                                  </Grid>
+                                  </Grid>}
                                 </Grid>
                               )
                             )}
-                            <Stack direction="row-reverse">
+                           {!disableItems && <Stack direction="row-reverse">
                               <Button
                                 type="secondary"
                                 title="Add Inward Item"
@@ -314,9 +314,9 @@ const AddInwardPage: React.FC = () => {
                                     vendorId: "",
                                   })
                                 }
-                                disabled={loading || !!disableItems}
+                                disabled={loading }
                               />
-                            </Stack>
+                            </Stack>}
                             <Stack direction="row-reverse" spacing={2}>
                               <Button
                                 type="primary"
