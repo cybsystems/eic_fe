@@ -1,38 +1,49 @@
 /* eslint-disable @typescript-eslint/ban-ts-comment */
-import { useFormik, FieldArray, FormikProvider } from "formik";
+import { FieldArray, FormikProvider, useFormik } from "formik";
 import React, { useEffect, useState } from "react";
-import { useNavigate } from "react-router-dom";
 
 /* eslint-disable @typescript-eslint/no-explicit-any */
 import Button from "@components/atoms/Button";
 import PageGridContainer from "@components/atoms/PageGridContainer";
-import { Grid, Paper, Stack, TextField, MenuItem } from "@mui/material";
+import { Grid, MenuItem, Paper, Stack, TextField } from "@mui/material";
 
 import Breadcrumbs from "@components/atoms/Breadcrumbs";
-import { loadInitialData, saveInward } from "./helper";
 import CenterLoader from "@components/atoms/CenterLoader";
+import { formatError, showToast } from "@utils/index";
+import {
+  getMaterialIssueItemsForWareHouse,
+  loadInitialData,
+  saveInward,
+} from "./helper";
 import { validationSchema } from "./schema";
-import { showToast } from "@utils/index";
 
 const AddInwardPage: React.FC = () => {
   const [vendors, setVendors] = useState([]);
   const [selectedContractor, setSelectedContractor] = useState(null);
   const [selectedVendor, setSelectedVendor] = useState(null);
+  const [selectedWarehouse, setSelectdWarehouse] = useState(null);
   const [contractors, setContractors] = useState([]);
+  const [warehouses, setWareHouses] = useState([]);
   const [source, setSource] = useState(null);
   const [items, setItems] = useState([]);
   const [loading, setLoading] = useState<boolean>(false);
-  const navigate = useNavigate();
+
+
+
+  const fetchInitialData=async()=>{
+    const res = await loadInitialData();
+      setContractors(res.contractors);
+      setVendors(res.vendors);
+      setItems(res.items);
+      setWareHouses(res.warehouses);
+      setLoading(false);
+  }
 
   // Fetch initial data if editing an inward
   useEffect(() => {
     (async () => {
       setLoading(true);
-      const res = await loadInitialData();
-      setContractors(res.contractors);
-      setVendors(res.vendors);
-      setItems(res.items);
-      setLoading(false);
+      fetchInitialData()
     })();
   }, []);
 
@@ -44,15 +55,20 @@ const AddInwardPage: React.FC = () => {
       if (source === "vendor") {
         item.vendorId = selectedVendor;
       }
+      if (source === "warehouse") {
+        item.wareHouseId = selectedWarehouse;
+      }
       return item;
     });
-    await saveInward({inwards:formatPayload});
+    await saveInward({ inwards: formatPayload });
+    await fetchInitialData()
     showToast("success", "Inward Sucessfully");
-    setSource(null)
-    setSelectedContractor(null)
-    setSelectedVendor(null)
-    formik.resetForm()
-   };
+    setSource(null);
+    setSelectedContractor(null);
+    setSelectedVendor(null);
+    setSelectdWarehouse(null)
+    formik.resetForm();
+  };
 
   const formik = useFormik<any>({
     initialValues: {
@@ -68,7 +84,27 @@ const AddInwardPage: React.FC = () => {
     enableReinitialize: true,
     onSubmit: onSubmit,
   });
-   return (
+
+  const onWareHouseSelected = async (id: any) => {
+    try {
+      const materailIssueItemsResponse =
+        await getMaterialIssueItemsForWareHouse(id);
+      const materialIssueItems = materailIssueItemsResponse.data;
+      const formatedItems = materialIssueItems.map((item: any) => {
+        return {
+          itemId: item.itemId,
+          quantity: item.quantity,
+        };
+      });
+      formik.setFieldValue("inwards", formatedItems);
+      setSelectdWarehouse(id);
+    } catch (error) {
+      showToast("error", formatError(error));
+    }
+  };
+
+  const disableItems = selectedWarehouse && source === "warehouse";
+  return (
     <PageGridContainer>
       <Breadcrumbs
         breadcrumbs={[
@@ -94,9 +130,9 @@ const AddInwardPage: React.FC = () => {
                       value={source}
                       onChange={(e: any) => setSource(e.target.value)}
                     >
-                      <MenuItem value="0">None</MenuItem>
                       <MenuItem value="contractor">Contractor</MenuItem>
                       <MenuItem value="vendor">Vendor</MenuItem>
+                      <MenuItem value="warehouse" disabled={warehouses.length===0}>Warehouse</MenuItem>
                     </TextField>
                   </Grid>
                   {source === "contractor" && (
@@ -140,135 +176,162 @@ const AddInwardPage: React.FC = () => {
                       </TextField>
                     </Grid>
                   )}
+                  {source === "warehouse" && (
+                    <Grid item xs={12} sm={3}>
+                      <TextField
+                        select
+                        label="Warehouse"
+                        fullWidth
+                        onChange={(e: any) =>
+                          onWareHouseSelected(e.target.value)
+                        }
+                      >
+                        {warehouses.map((warehouse) => (
+                          //@ts-ignore
+
+                          <MenuItem key={warehouse.id} value={warehouse.id}>
+                            {
+                              //@ts-ignore
+
+                              warehouse.name
+                            }
+                          </MenuItem>
+                        ))}
+                      </TextField>
+                    </Grid>
+                  )}
                 </Grid>
               </Stack>
 
-              {source !== null && (selectedContractor || selectedVendor) && (
-                <FormikProvider value={formik}>
-                  <form onSubmit={formik.handleSubmit}>
-                    <FieldArray
-                      name="inwards"
-                      render={(arrayHelpers) => (
-                        <Stack spacing={3}>
-                          {formik.values.inwards.map(
-                            (inward: any, index: number) => (
-                              <Grid container spacing={2} key={index}>
-                                <Grid item xs={12} sm={3}>
-                                  <TextField
-                                    select
-                                    label="Item"
-                                    name={`inwards.${index}.itemId`}
-                                    value={inward.itemId}
-                                    onChange={formik.handleChange}
-                                    onBlur={formik.handleBlur}
-                                    error={Boolean(
-                                      //@ts-ignore
-                                      formik.touched.inwards?.[index]?.itemId &&
+              {source !== null &&
+                (source !== "warehouse" || selectedWarehouse) &&
+                (selectedContractor || selectedVendor || selectedWarehouse) && (
+                  <FormikProvider value={formik}>
+                    <form onSubmit={formik.handleSubmit}>
+                      <FieldArray
+                        name="inwards"
+                        render={(arrayHelpers) => (
+                          <Stack spacing={3}>
+                            {formik.values.inwards.map(
+                              (inward: any, index: number) => (
+                                <Grid container spacing={2} key={index}>
+                                  <Grid item xs={12} sm={3}>
+                                    <TextField
+                                      select
+                                      disabled={!!disableItems}
+                                      label="Item"
+                                      name={`inwards.${index}.itemId`}
+                                      value={inward.itemId}
+                                      onChange={formik.handleChange}
+                                      onBlur={formik.handleBlur}
+                                      error={Boolean(
+                                        //@ts-ignore
+                                        formik.touched.inwards?.[index]
+                                          ?.itemId &&
+                                          //@ts-ignore
+
+                                          formik.errors.inwards?.[index]?.itemId
+                                      )}
+                                      helperText={
+                                        //@ts-ignore
+
+                                        formik.touched.inwards?.[index]
+                                          ?.itemId &&
                                         //@ts-ignore
 
                                         formik.errors.inwards?.[index]?.itemId
-                                    )}
-                                    helperText={
-                                      //@ts-ignore
+                                      }
+                                      fullWidth
+                                      required
+                                    >
+                                      {items.map((item) => (
+                                        //@ts-ignore
 
-                                      formik.touched.inwards?.[index]?.itemId &&
-                                      //@ts-ignore
+                                        <MenuItem key={item.id} value={item.id}>
+                                          {
+                                            //@ts-ignore
 
-                                      formik.errors.inwards?.[index]?.itemId
-                                    }
-                                    fullWidth
-                                    required
-                                  >
-                                    {items.map((item) => (
-                                      //@ts-ignore
+                                            item.item
+                                          }
+                                        </MenuItem>
+                                      ))}
+                                    </TextField>
+                                  </Grid>
+                                  <Grid item xs={12} sm={2}>
+                                    <TextField
+                                      label="Quantity"
+                                      disabled={!!disableItems}
+                                      name={`inwards.${index}.quantity`}
+                                      value={inward.quantity}
+                                      onChange={formik.handleChange}
+                                      onBlur={formik.handleBlur}
+                                      error={Boolean(
+                                        //@ts-ignore
 
-                                      <MenuItem key={item.id} value={item.id}>
-                                        {
+                                        formik.touched.inwards?.[index]
+                                          ?.quantity &&
                                           //@ts-ignore
 
-                                          item.item
-                                        }
-                                      </MenuItem>
-                                    ))}
-                                  </TextField>
-                                </Grid>
-                                <Grid item xs={12} sm={2}>
-                                  <TextField
-                                    label="Quantity"
-                                    name={`inwards.${index}.quantity`}
-                                    value={inward.quantity}
-                                    onChange={formik.handleChange}
-                                    onBlur={formik.handleBlur}
-                                    error={Boolean(
-                                      //@ts-ignore
+                                          formik.errors.inwards?.[index]
+                                            ?.quantity
+                                      )}
+                                      helperText={
+                                        //@ts-ignore
 
-                                      formik.touched.inwards?.[index]
-                                        ?.quantity &&
+                                        formik.touched.inwards?.[index]
+                                          ?.quantity &&
                                         //@ts-ignore
 
                                         formik.errors.inwards?.[index]?.quantity
-                                    )}
-                                    helperText={
-                                      //@ts-ignore
+                                      }
+                                      fullWidth
+                                      required
+                                      type="number"
+                                    />
+                                  </Grid>
 
-                                      formik.touched.inwards?.[index]
-                                        ?.quantity &&
-                                      //@ts-ignore
-
-                                      formik.errors.inwards?.[index]?.quantity
-                                    }
-                                    fullWidth
-                                    required
-                                    type="number"
-                                  />
+                                  <Grid item xs={12} sm={1}>
+                                    <Button
+                                      type="secondary"
+                                      title="Remove"
+                                      onClick={() => arrayHelpers.remove(index)}
+                                      disabled={loading || !!disableItems}
+                                    />
+                                  </Grid>
                                 </Grid>
-
-                                <Grid item xs={12} sm={1}>
-                                  <Button
-                                    type="secondary"
-                                    title="Remove"
-                                    onClick={() => arrayHelpers.remove(index)}
-                                    disabled={loading}
-                                  />
-                                </Grid>
-                              </Grid>
-                            )
-                          )}
-                          <Button
-                            type="secondary"
-                            title="Add Inward Item"
-                            onClick={() =>
-                              arrayHelpers.push({
-                                itemId: "",
-                                quantity: "",
-                                contractorOrVendor: "",
-                                contractorId: "",
-                                vendorId: "",
-                              })
-                            }
-                            disabled={loading}
-                          />
-                          <Stack direction="row-reverse" spacing={2}>
-                            <Button
-                              type="primary"
-                              title="Submit"
-                              onClick={formik.handleSubmit}
-                              isLoading={formik.isSubmitting}
-                              disabled={loading}
-                            />
-                            <Button
-                              type="secondary"
-                              onClick={() => navigate("/inwards")}
-                              title="Cancel"
-                              disabled={formik.isSubmitting}
-                            />
+                              )
+                            )}
+                            <Stack direction="row-reverse">
+                              <Button
+                                type="secondary"
+                                title="Add Inward Item"
+                                onClick={() =>
+                                  arrayHelpers.push({
+                                    itemId: "",
+                                    quantity: "",
+                                    contractorOrVendor: "",
+                                    contractorId: "",
+                                    vendorId: "",
+                                  })
+                                }
+                                disabled={loading || !!disableItems}
+                              />
+                            </Stack>
+                            <Stack direction="row-reverse" spacing={2}>
+                              <Button
+                                type="primary"
+                                title={disableItems?"Approve":"Submit"}
+                                onClick={formik.handleSubmit}
+                                isLoading={formik.isSubmitting}
+                                disabled={loading}
+                              />
+                            </Stack>
                           </Stack>
-                        </Stack>
-                      )}
-                    />
-                  </form>
-                </FormikProvider>
-              )}
+                        )}
+                      />
+                    </form>
+                  </FormikProvider>
+                )}
             </>
           )}
         </Paper>
