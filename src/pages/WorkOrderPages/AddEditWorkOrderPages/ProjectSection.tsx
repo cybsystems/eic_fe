@@ -58,7 +58,7 @@ const ProjectSection = (props: ProjectSectionProps) => {
             >
               {contractorUnits.map((unit: any) => (
                 <MenuItem key={unit.id} value={unit.id}>
-                  {unit.Contractor.name} - {unit.ContractorUnit.name}
+                  {unit.contractor.name} - {unit.contractorUnit.name}
                 </MenuItem>
               ))}
             </Select>
