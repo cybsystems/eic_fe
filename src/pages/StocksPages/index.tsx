@@ -3,7 +3,7 @@
 import { useNavigate } from "react-router-dom";
 
 import AddIcon from "@mui/icons-material/Add";
-import {  Grid, Paper, Stack } from "@mui/material";
+import { Grid, Paper, Stack } from "@mui/material";
 
 import Button from "@components/atoms/Button";
 import DataTable from "@components/atoms/DataTable";
@@ -18,25 +18,20 @@ const columns = [
   {
     field: "item",
     headerName: "Name",
+    flex: 1,
   },
   {
     field: "category",
     headerName: "Category",
     renderCell: (params: any) => params.row.category.name,
+    flex: 1,
   },
   {
     field: "feature",
     headerName: "Feature",
     renderCell: (params: any) => params.row.feature.feature,
+    flex: 1,
   },
-  // {
-  //   field: "quantity",
-  //   headerName: "Quantity",
-  //   headerAlign: "center",
-  //   renderCell: (params: any) => (
-  //     <Box sx={{ textAlign: "center", width: "100%" }}>{params.value}</Box>
-  //   ),
-  // },
 ];
 
 const StocksPages = () => {

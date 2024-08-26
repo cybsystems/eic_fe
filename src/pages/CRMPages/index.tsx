@@ -18,14 +18,20 @@ const columns = [
   {
     field: "name",
     headerName: "Name",
+    flex:1,
+
   },
   {
     field: "email",
     headerName: "Email",
+    flex:1,
+
   },
   {
     field: "phoneNumber",
     headerName: "Phone Number",
+    flex:1,
+
   },
 ];
 
