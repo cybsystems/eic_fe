@@ -5,6 +5,7 @@ import Typography from "@mui/material/Typography";
 import Chart from "./Chart"; // Assume this is a custom chart component
 import InventoryTable from "./InventoryTable"; // Assume this is a custom table component
 import OrdersTable from "./OrdersTable"; // Assume this is a custom table component
+import ItemCountCard from "./ItemCountCard";
 
 const Dashboard = () => {
   return (
@@ -12,22 +13,7 @@ const Dashboard = () => {
       <Grid container spacing={2}>
         {/* Total Inventory Card */}
         <Grid item xs={12} sm={6} md={3}>
-          <Paper
-            sx={{
-              p: 2,
-              display: "flex",
-              flexDirection: "column",
-              height: { xs: 100, sm: 140 },
-            }}
-          >
-            <Typography variant="h6">Total Inventory</Typography>
-            <Typography
-              variant="h4"
-              sx={{ mt: 1, fontSize: { xs: "1.5rem", sm: "2rem" } }}
-            >
-              8,540
-            </Typography>
-          </Paper>
+           <ItemCountCard/>
         </Grid>
 
         {/* Orders Today Card */}

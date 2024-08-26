@@ -1,47 +1,65 @@
-import Table from '@mui/material/Table';
-import TableBody from '@mui/material/TableBody';
-import TableCell from '@mui/material/TableCell';
-import TableContainer from '@mui/material/TableContainer';
-import TableHead from '@mui/material/TableHead';
-import TableRow from '@mui/material/TableRow';
-import Paper from '@mui/material/Paper';
+/* eslint-disable @typescript-eslint/no-explicit-any */
+import DataTable from "@components/atoms/DataTable";
+import { Grid, Paper } from "@mui/material";
+import { getItems } from "@pages/StocksPages/helper";
+import { showToast } from "@utils/index";
+import { useEffect, useState } from "react";
 
-function createData(name: string, quantity: number, status: string) {
-  return { name, quantity, status };
-}
-
-const rows = [
-  createData('Item A', 159, 'In Stock'),
-  createData('Item B', 237, 'Low Stock'),
-  createData('Item C', 262, 'Out of Stock'),
-  createData('Item D', 305, 'In Stock'),
-  createData('Item E', 356, 'Low Stock'),
+const columns = [
+  { field: "id", headerName: "ID", width: 90 },
+  {
+    field: "item",
+    headerName: "Name",
+    flex: 1,
+  },
+  {
+    field: "category",
+    headerName: "Category",
+    renderCell: (params: any) => params.row.category.name,
+    flex: 1,
+  },
+  {
+    field: "feature",
+    headerName: "Feature",
+    renderCell: (params: any) => params.row.feature.feature,
+    flex: 1,
+  },
+  {
+    field: "quantity",
+    headerName: "Quantity",
+    flex: 1,
+  },
 ];
 
+
 const InventoryTable = () => {
+  const [items, setItems] = useState<Array<any>>([]);
+  const [loading, setLoading] = useState(true);
+
+  useEffect(() => {
+    (async () => {
+      try {
+        const itemsResponse = await getItems();
+        setItems(itemsResponse.data);
+      } catch (error: any) {
+        showToast("error", error?.message);
+      } finally {
+        setLoading(false);
+      }
+    })();
+  }, []);
+
   return (
-    <TableContainer component={Paper}>
-      <Table sx={{ minWidth: 650 }} aria-label="simple table">
-        <TableHead>
-          <TableRow>
-            <TableCell>Item</TableCell>
-            <TableCell align="right">Quantity</TableCell>
-            <TableCell align="right">Status</TableCell>
-          </TableRow>
-        </TableHead>
-        <TableBody>
-          {rows.map((row) => (
-            <TableRow key={row.name}>
-              <TableCell component="th" scope="row">
-                {row.name}
-              </TableCell>
-              <TableCell align="right">{row.quantity}</TableCell>
-              <TableCell align="right">{row.status}</TableCell>
-            </TableRow>
-          ))}
-        </TableBody>
-      </Table>
-    </TableContainer>
+    <Grid item xs={12}>
+      <Paper elevation={1}>
+        <DataTable
+          columns={columns}
+          rows={items}
+          pageSize={10}
+          loading={loading}
+        />
+      </Paper>
+    </Grid>
   );
 };
 
