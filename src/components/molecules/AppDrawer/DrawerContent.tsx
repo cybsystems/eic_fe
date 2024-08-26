@@ -34,7 +34,7 @@ const DrawerContent = ({ open }: { open: boolean }) => {
   const menuItems = [
     { text: 'Dashboard', icon: <DashboardIcon />, path: '/' },
     { text: 'Work Orders', icon: <WorkIcon />, path: '/work-orders' },
-    { text: 'Stocks', icon: <StoreIcon />, path: '/stocks' },
+    { text: 'Items', icon: <StoreIcon />, path: '/stocks' },
     { text: 'CRM', icon: <ContactMailIcon />, path: '/crm' },
     { text: 'Users', icon: <PeopleIcon />, path: '/users' },
     { text: 'Vendors', icon: <PeopleIcon />, path: '/vendors' },

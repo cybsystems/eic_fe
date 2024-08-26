@@ -13,6 +13,7 @@ import AddEditProjectPage from "@pages/ProjectsPages/AddEditProjectPages";
 import AddContractorPage from "@pages/ProjectsPages/AddEditProjectPages/AddContractor";
 import AddUnitsPage from "@pages/ProjectsPages/AddEditProjectPages/AddUnitsPage";
 import ProjectDetailsPage from "@pages/ProjectsPages/ProjectDetailsPage";
+import ReportsPage from "@pages/ReportsPage";
 import StocksPages from "@pages/StocksPages";
 import AddEditStockPage from "@pages/StocksPages/AddEditStocksPage";
 import UsersPage from "@pages/UsersPage";
@@ -77,6 +78,7 @@ const AppPages = () => {
         <Route path="/material-issue/" element={<MaterialIssuePage/>}/>
 
         <Route path="/dispatch/" element={<DispatchPages/>}/>
+        <Route path="/reports/" element={<ReportsPage/>}/>
 
 
         <Route path="*" element={<PageNotFound />} />
