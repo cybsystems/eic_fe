@@ -15,35 +15,12 @@ import { getInwards } from "./helper";
 const columns = [
   { field: "id", headerName: "ID", width: 90 },
   {
-    field: "Item",
+    field: "name",
     headerName: "Item",
-    flex:0.5,
-    renderCell: (params: any) => {
-      return params?.row?.item      ?.item
-      ;
-    },
   },
   {
     field: "quantity",
     headerName: "Quantity",
-    flex:0.5,
-    
-  },
-  {
-    field: "contractor",
-    headerName: "Contractor",
-    flex:0.5,
-    renderCell: (params: any) => {
-      return params?.row?.contractor?.name || '-';
-    },
-  },
-  {
-    field: "vendor",
-    headerName: "Vendor",
-    flex:0.5,
-    renderCell: (params: any) => {
-      return params?.row?.vendor?.name || '-';
-    },
   },
 ];
 
@@ -57,7 +34,10 @@ const InwardPage = () => {
     (async () => {
       try {
         const res = await getInwards();
-        setUsers(res.data);
+        const formattedData=res.data.map((i:any)=>{
+          return { id: i.item.id, name: i.item.item, quantity: i.quantity };
+        })
+        setUsers(formattedData);
       } catch (error) {
         console.log(error);
       } finally {
@@ -65,7 +45,7 @@ const InwardPage = () => {
       }
     })();
   }, []);
-
+  console.log({users})
   const onRowClick = (row: any) => {
     console.log({ row });
   };

@@ -16,6 +16,7 @@ import {
   saveInward,
 } from "./helper";
 import { validationSchema } from "./schema";
+import { useNavigate } from "react-router-dom";
 
 const AddInwardPage: React.FC = () => {
   const [vendors, setVendors] = useState([]);
@@ -27,6 +28,7 @@ const AddInwardPage: React.FC = () => {
   const [source, setSource] = useState(null);
   const [items, setItems] = useState([]);
   const [loading, setLoading] = useState<boolean>(false);
+  const navigate = useNavigate();
 
 
 
@@ -68,6 +70,7 @@ const AddInwardPage: React.FC = () => {
     setSelectedVendor(null);
     setSelectdWarehouse(null)
     formik.resetForm();
+    navigate("/inwards")
   };
 
   const formik = useFormik<any>({
