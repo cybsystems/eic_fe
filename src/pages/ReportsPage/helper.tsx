@@ -1,6 +1,7 @@
 /* eslint-disable @typescript-eslint/no-explicit-any */
 import apiInstance from "@api/index";
 import { Box } from "@mui/material";
+import { formatDate } from "@utils/index";
 
 export const DISPATCHES_COLUMNS = [
   {
@@ -35,6 +36,12 @@ export const DISPATCHES_COLUMNS = [
 
     flex: 1,
   },
+  {
+    field: "createdAt",
+    headerName: "Date",
+    renderCell: (params: any) => <Box>{formatDate(params.value)}</Box>,
+    flex: 1,
+  },
 ];
 
 export const STOCKS_COULMNS = [
@@ -65,6 +72,12 @@ export const STOCKS_COULMNS = [
     field: "quantity",
     headerName: "Quantity",
     renderCell: (params: any) => <Box>{params.value}</Box>,
+    flex: 1,
+  },
+  {
+    field: "createdAt",
+    headerName: "Date",
+    renderCell: (params: any) => <Box>{formatDate(params.value)}</Box>,
     flex: 1,
   },
 ];
@@ -102,6 +115,12 @@ export const INWARD_COLUMNS = [
 
     flex: 1,
     renderCell: (params: any) => <Box>{params.value || "-"}</Box>,
+  },
+  {
+    field: "createdAt",
+    headerName: "Date",
+    renderCell: (params: any) => <Box>{formatDate(params.value)}</Box>,
+    flex: 1,
   },
 ];
 
