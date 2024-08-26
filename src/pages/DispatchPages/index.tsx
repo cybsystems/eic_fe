@@ -177,7 +177,7 @@ const DispatchPages = () => {
                                       container
                                       spacing={2}
                                       alignItems="center"
-                                      key={index}
+                                      key={item.id}
                                       sx={{ marginBottom: 2 }}
                                     >
                                       <Grid item xs={5}>
