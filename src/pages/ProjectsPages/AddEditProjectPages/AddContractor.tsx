@@ -76,7 +76,7 @@ const AddContractorPage = () => {
   return (
     <PageGridContainer>
       <Grid item xs={12}>
-        <Paper elevation={3} sx={{ padding: 4 }}>
+        <Paper  sx={{ padding: 4 }}>
           <Formik
             initialValues={initialValues}
             validationSchema={projectContractorSchema}

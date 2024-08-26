@@ -85,7 +85,7 @@ const MaterialIssuePage = () => {
         title={"Material Issue"}
       />
       <Grid item xs={12}>
-        <Paper elevation={3} sx={{ padding: 4 }}>
+        <Paper  sx={{ padding: 4 }}>
           {loading ? (
             <CenterLoader />
           ) : (

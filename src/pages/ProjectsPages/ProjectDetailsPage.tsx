@@ -34,7 +34,7 @@ const ProjectDetailsPage = () => {
   return (
     <PageGridContainer>
       <Grid item xs={12}>
-        <Paper elevation={3} sx={{ padding: 4 }}>
+        <Paper  sx={{ padding: 4 }}>
           <Stack direction="row" alignItems="center" mb={2}>
             <Typography variant="h4" gutterBottom sx={{ flexGrow: 1 }}>
               {projectDetails.projectDetails.name}

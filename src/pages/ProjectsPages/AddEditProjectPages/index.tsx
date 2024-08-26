@@ -35,7 +35,7 @@ const AddEditProjectPage = () => {
   return (
     <PageGridContainer>
       <Grid item xs={12}>
-        <Paper elevation={3} sx={{ padding: 4 }}>
+        <Paper  sx={{ padding: 4 }}>
           <form onSubmit={formik.handleSubmit}>
             <Stack spacing={3}>
               <TextField

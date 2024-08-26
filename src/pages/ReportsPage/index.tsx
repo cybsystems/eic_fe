@@ -88,7 +88,7 @@ const ReportsPage = () => {
         title="Reports"
       />
       <Grid item xs={12}>
-        <Paper elevation={3} sx={{ padding: 4 }}>
+        <Paper  sx={{ padding: 4 }}>
           <FormControl fullWidth margin="normal">
             <InputLabel id="report-type-label">Report Type</InputLabel>
             <Select

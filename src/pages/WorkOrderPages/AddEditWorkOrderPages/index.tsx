@@ -106,7 +106,7 @@ const AddEditWorkOrderPage = () => {
         title="Create Work Order"
       />
       <Grid item xs={12}>
-        <Paper elevation={3} sx={{ padding: 4 }}>
+        <Paper  sx={{ padding: 4 }}>
           <WithLoaderWrapper loading={loading}>
             <form onSubmit={formik.handleSubmit}>
               <Stack spacing={3}>

@@ -111,7 +111,7 @@ const UserFormPage: React.FC = () => {
         title={editUser?`${formik.values.firstName} ${formik.values.lastName}`:'Create User'}
       />
       <Grid item xs={12}>
-        <Paper elevation={3} sx={{ padding: 4 }}>
+        <Paper  sx={{ padding: 4 }}>
           <form onSubmit={formik.handleSubmit}>
             <Stack spacing={3}>
               <TextField

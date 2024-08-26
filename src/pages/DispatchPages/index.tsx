@@ -100,7 +100,7 @@ const DispatchPages = () => {
         title="Dispatch"
       />
       <Grid item xs={12}>
-        <Paper elevation={3} sx={{ padding: 4 }}>
+        <Paper  sx={{ padding: 4 }}>
           <WithLoaderWrapper loading={loading}>
             <Formik
               initialValues={{

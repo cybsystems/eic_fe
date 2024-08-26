@@ -23,7 +23,7 @@ const AddEditFirmPage = () => {
   return (
     <PageGridContainer>
       <Grid item xs={12}>
-        <Paper elevation={3} sx={{ padding: 4 }}>
+        <Paper  sx={{ padding: 4 }}>
           <Stack spacing={3}>
              
             <TextField

@@ -75,7 +75,7 @@ const WorkOrderDetailsPage = () => {
       <Grid container spacing={3}>
         
         <Grid item xs={12}>
-          <Card elevation={3}>
+          <Card >
             <CardContent>
               <WithLoaderWrapper loading={loading}> 
               {workOrderDetails && (

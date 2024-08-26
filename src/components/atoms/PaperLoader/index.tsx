@@ -5,7 +5,7 @@ const PaperLoader = () => {
   return (
     <PageGridContainer>
     <Grid item xs={12}>
-      <Paper elevation={3} sx={{ padding: 4 }}>
+      <Paper  sx={{ padding: 4 }}>
         <Grid
           item
           xs={12}
