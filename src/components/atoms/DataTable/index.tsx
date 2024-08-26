@@ -1,10 +1,10 @@
 /* eslint-disable @typescript-eslint/no-explicit-any */
 import { Box } from "@mui/material";
-import { DataGrid, GridColDef, GridRowParams } from "@mui/x-data-grid";
+import { DataGrid, GridRowParams } from "@mui/x-data-grid";
 import React from "react";
 
 interface DataTableProps {
-  columns: GridColDef[];
+  columns: any[];
   rows: any[]; // Ideally, define a specific type for your rows instead of using `any`.
   pageSize?: number;
   onRowClick?: (row: GridRowParams) => void;
