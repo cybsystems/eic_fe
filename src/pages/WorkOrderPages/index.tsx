@@ -32,7 +32,7 @@ const columns = [
     field: "ContractorUnitAssignment",
     headerName: "Unit",
     renderCell: (params: any) => {
-      return params?.row?.ContractorUnitAssignment?.ContractorUnit?.name;
+      return params?.row?.ContractorUnitAssignment?.contractorUnit?.name;
     },
     width: 90
   },
@@ -40,7 +40,7 @@ const columns = [
     field: "ContractorUnitAssignment.Contractor",
     headerName: "Contractor",
     renderCell: (params: any) => {
-      return params?.row?.ContractorUnitAssignment?.Contractor?.name;
+      return params?.row?.ContractorUnitAssignment?.contractor?.name;
     },
     width: 140
   },

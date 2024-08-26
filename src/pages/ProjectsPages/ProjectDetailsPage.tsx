@@ -51,19 +51,19 @@ const ProjectDetailsPage = () => {
                   <div key={unit.id}>
                     <ListItem>
                       <ListItemText
-                        primary={`Unit: ${unit.ContractorUnit.name}`}
+                        primary={`Unit: ${unit.contractorUnit.name}`}
                         secondary={
                           <>
                             <Typography component="span" variant="body2" color="text.primary">
-                              Contractor: {unit.Contractor.name}
+                              Contractor: {unit.contractor.name}
                             </Typography>
                             <br />
                             <Typography component="span" variant="body2" color="text.primary">
-                              Email: {unit.Contractor.email}
+                              Email: {unit.contractor.email}
                             </Typography>
                             <br />
                             <Typography component="span" variant="body2" color="text.primary">
-                              Phone: {unit.Contractor.phoneNumber}
+                              Phone: {unit.contractor.phoneNumber}
                             </Typography>
                           </>
                         }

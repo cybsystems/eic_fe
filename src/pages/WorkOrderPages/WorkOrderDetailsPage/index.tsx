@@ -167,7 +167,7 @@ const WorkOrderDetailsPage = () => {
                             <strong>Unit:</strong>{" "}
                             {
                               workOrderDetails.ContractorUnitAssignment
-                                .ContractorUnit.name
+                                .contractorUnit.name
                             }
                           </Typography>
                         </Grid>
@@ -176,7 +176,7 @@ const WorkOrderDetailsPage = () => {
                             <strong>Contractor:</strong>{" "}
                             {
                               workOrderDetails.ContractorUnitAssignment
-                                .Contractor.name
+                                .contractor.name
                             }
                           </Typography>
                         </Grid>
