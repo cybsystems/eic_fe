@@ -9,7 +9,7 @@ export const formatDate=(date:any)=>
   })
 
 export const formatError = (err: any) =>
-  err?.response?.data?.message || err.message;
+  err?.response?.data?.error || err.message;
 
 export const showToast=(type:"success"|"error",message:string)=>{
     const toastMethod=type==="error"?toast.error:toast.success;
