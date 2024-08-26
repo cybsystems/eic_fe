@@ -1,6 +1,7 @@
 import CRMPage from "@pages/CRMPages";
 import AddEditCRMPage from "@pages/CRMPages/AddEditCRMPage";
 import DashboardPage from "@pages/DashboardPage";
+import DispatchPages from "@pages/DispatchPages";
 import FirmsPage from "@pages/FirmsPages";
 import AddEditFirmPage from "@pages/FirmsPages/AddEditFirmPage";
 import HomePage from "@pages/HomePage";
@@ -72,9 +73,10 @@ const AppPages = () => {
 
 
         <Route path="/inwards/" element={<AddInwardPage/>}/>
-        <Route path="/inwards/new" element={<AddInwardPage/>}/>
 
         <Route path="/material-issue/" element={<MaterialIssuePage/>}/>
+
+        <Route path="/dispatch/" element={<DispatchPages/>}/>
 
 
         <Route path="*" element={<PageNotFound />} />
